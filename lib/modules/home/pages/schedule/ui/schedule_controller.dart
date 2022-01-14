@@ -6,14 +6,15 @@ import 'package:schedule_app_admin/modules/home/pages/schedule/models/schedules_
 import 'package:schedule_app_admin/modules/home/pages/schedule/models/services_model.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/models/times_model.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/services/schedule_service.dart';
+import 'package:schedule_app_admin/modules/home/services/home_service.dart';
 import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 
 class ScheduleController extends GetxController with LoaderMixin, MessageMixin {
   final ScheduleService _scheduleService;
-  final HomeController _homeController;
+  final HomeService _homeService;
 
-  ScheduleController({required ScheduleService scheduleService,required HomeController homeController})
-      : _scheduleService = scheduleService,_homeController=homeController;
+  ScheduleController({required ScheduleService scheduleService,required HomeService homeService})
+      : _scheduleService = scheduleService,_homeService=homeService;
 
   final _loading = Rx<bool>(false);
   final _messages = Rxn<MessageModel>();
@@ -62,18 +63,21 @@ class ScheduleController extends GetxController with LoaderMixin, MessageMixin {
 
   Future<void> queueFunctionCallCalendarWidget() async {
     _loading(true);
-    getTimes();
-    var schedules = await getScheduleByDate();
-    if (schedules) {
-      var configDays = await getConfigurationDayScheduler();
-      if (configDays) {
-        var services = await getServices();
-        if (services) {
-          configuresAmountOfSchedulesPerDay();
-          setTheHoursIsBusy();
-        }
-      }
-    }
+   var times= await  getTimes();
+   if(times){
+     var schedules = await getScheduleByDate();
+     if (schedules) {
+       var configDays = await getConfigurationDayScheduler();
+       if (configDays) {
+         var services = await getServices();
+         if (services) {
+           configuresAmountOfSchedulesPerDay();
+           setTheHoursIsBusy();
+         }
+       }
+     }
+   }
+
     _loading(false);
   }
 
@@ -111,9 +115,21 @@ class ScheduleController extends GetxController with LoaderMixin, MessageMixin {
     return result;
   }
 
-  void getTimes()  {
-    listOfTimesDefault.clear();
-   listOfTimesDefault.addAll(_homeController.listOfTimesDefault);
+  Future<bool> getTimes() async {
+    _loading(true);
+    bool result = false;
+    var res = await _homeService.getTimes();
+    _loading(false);
+    res.fold((l) {
+      errorGetTimes.value = l.error;
+      result = false;
+    }, (r) {
+      listOfTimesDefault.clear();
+      errorGetTimes.value = '';
+      listOfTimesDefault.addAll(r);
+      result = true;
+    });
+    return result;
   }
 
   Future<bool> getScheduleByDate() async {

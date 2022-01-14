@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:schedule_app_admin/app/module/module.dart';
+import 'package:schedule_app_admin/modules/home/pages/admin/ui/admin_bindings.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/pages/add_new_hours.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/pages/add_new_services.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/pages/add_new_vacancy.dart';
@@ -19,17 +20,17 @@ class HomeModule implements Module {
     GetPage(
       name: '/add_hours',
       page: () => const AddNewHours(),
-      binding: HomeBindings(),
+      binding: AdminBindings(),
     ),
     GetPage(
       name: '/add_vacancy',
       page: () =>const  AddNewVacancy(),
-      binding: HomeBindings(),
+      binding: AdminBindings(),
     ),
     GetPage(
       name: '/add_services',
       page: () => const AddNewServices(),
-      binding: HomeBindings(),
+      binding: AdminBindings(),
     ),
   ];
 }

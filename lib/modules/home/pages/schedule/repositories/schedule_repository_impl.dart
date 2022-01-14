@@ -69,7 +69,6 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   Future<ResultGetSchedulesByDate> getScheduleByDate(
       {required DateTime date}) async {
     try {
-    
       var response = await _clientHttp.post('/schedule/scheduleByDate',
           data: {'date': '${date.year}-${date.month}-${date.day}'});
       int? statusCode = response.data['code'];
@@ -86,14 +85,9 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
         default:
           return left(ScheduleUnknownError(error: 'Erro desconhecido'));
       }
-
-
-
-
-    } catch (e, s) {
+    } catch (e) {
       log(e.toString());
-      log(s.toString());
-      return left(ScheduleUnknownError());
+      return left(ScheduleUnknownError(error: 'Erro desconhecido'));
     }
   }
 

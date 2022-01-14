@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/padding_default.dart';
-import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
+import 'package:schedule_app_admin/modules/home/pages/admin/ui/admin_controller.dart';
 
 class AddNewHours extends StatefulWidget {
   const AddNewHours({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class AddNewHours extends StatefulWidget {
 }
 
 class _AddNewHoursState extends State<AddNewHours> {
-  final _homeController = Get.find<HomeController>();
+  final _adminController = Get.find<AdminController>();
 
   Widget _showTimePicker(Size sizes) {
     return ElevatedButton(
@@ -56,13 +56,13 @@ class _AddNewHoursState extends State<AddNewHours> {
             child: Obx(() {
               return Column(
                 children: [
-                  ..._homeController.listOfTimesDefault
+                  ..._adminController.listOfTimesDefault
                       .map((e) => Container(
                     margin: const EdgeInsets.only(top: 4,bottom: 4),
                     height: 60,
                     decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
+                    boxShadow:const [
                       BoxShadow(
                         color: Colors.black,
                         offset: Offset(2,4),

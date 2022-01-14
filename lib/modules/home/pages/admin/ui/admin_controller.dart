@@ -4,10 +4,10 @@ import 'package:schedule_app_admin/app/ui/loader/loader_mixin.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/models/times_model.dart';
 import 'package:schedule_app_admin/modules/home/services/home_service.dart';
 
-class HomeController extends GetxController with LoaderMixin, MessageMixin {
+class AdminController extends GetxController with LoaderMixin, MessageMixin {
   final HomeService _homeService;
 
-  HomeController({required HomeService homeService})
+  AdminController({required HomeService homeService})
       : _homeService = homeService;
 
   final _loading = Rx<bool>(false);
@@ -20,6 +20,11 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
     super.onInit();
     loaderListener(_loading);
     messageListener(_messages);
+  }
+
+  @override
+  void onReady() async {
+    await getTimes();
   }
 
   Future<List<TimesModel>> getTimes() async {
