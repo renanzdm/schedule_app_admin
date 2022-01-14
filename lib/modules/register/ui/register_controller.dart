@@ -21,32 +21,29 @@ class RegisterController extends GetxController with LoaderMixin, MessageMixin {
     messageListener(messages);
   }
 
-  Future<UserModel?> registerFirebase(
+  Future<bool> registerUser(
       {required String email,
-      required String password,
-      required String name,
-      String? defaultRole,
-      required String phone}) async {
-    UserModel? userModel;
+        required String password,
+        required String name,
+        required String phone}) async {
+    bool result =false;
     loading(true);
     var response = await _registerService.registerUser(
-        email: email,
-        password: password,
-        name: name,
-        phone: phone);
+        email: email, password: password, name: name,phone: phone);
 
     loading(false);
     response.fold(
-      (err) {
+          (err) {
+        result =false;
         messages(MessageModel.error(
             title: 'Erro ao realizar seu cadastro', message: err.error ?? ''));
       },
-      (user) async {
-        userModel = user;
+          (user) async {
+        result =true;
         messages(MessageModel.info(
             title: 'Successo', message: 'Cadastrado com sucesso'));
       },
     );
-    return userModel;
+    return result;
   }
 }

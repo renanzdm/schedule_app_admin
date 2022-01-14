@@ -32,7 +32,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
       int? statusCode = response.data['code'];
       switch (statusCode) {
         case 200:
-          return right(UserModel.fromMap(response.data['data']));
+          return right(response.data['data']);
         case 403:
           return left(RegisterFailed(error: response.data['data']));
         default:

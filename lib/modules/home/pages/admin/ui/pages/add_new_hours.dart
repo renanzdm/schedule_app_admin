@@ -21,7 +21,7 @@ class _AddNewHoursState extends State<AddNewHours> {
         fixedSize: Size(sizes.width, 40.0),
       ),
       onPressed: () async {
-        showTimePicker(
+      TimeOfDay? time = await showTimePicker(
           context: context,
           initialTime: const TimeOfDay(hour: 9, minute: 0),
           builder: (BuildContext context, Widget? child) {
@@ -32,6 +32,9 @@ class _AddNewHoursState extends State<AddNewHours> {
             );
           },
         );
+      if(time!=null) {
+        await _adminController.queueFunctionCallInsertNewHours(time: time);
+      }
       },
       child: const Text(
         'Adicionar Novo Horário',
@@ -56,26 +59,66 @@ class _AddNewHoursState extends State<AddNewHours> {
             child: Obx(() {
               return Column(
                 children: [
-                  ..._adminController.listOfTimesDefault
-                      .map((e) => Container(
-                    margin: const EdgeInsets.only(top: 4,bottom: 4),
-                    height: 60,
-                    decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow:const [
-                      BoxShadow(
-                        color: Colors.black,
-                        offset: Offset(2,4),
-                        blurRadius: 4
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text(
+                    'Estes são os horários que estão configurados',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 20,
+                    runSpacing: 20,
+                    children: [
+                      ..._adminController.listOfTimesDefault
+                          .map(
+                            (e) => Container(
+                              margin: const EdgeInsets.only(top: 4, bottom: 4),
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: context.themeRed, width: 1),
+                                boxShadow: const <BoxShadow>[
+                                  BoxShadow(
+                                    color: Colors.black,
+                                    offset: Offset(4.0, 6.0),
+                                    blurRadius: 2,
+                                  )
+                                ],
+                                color: Colors.white,
+                              ),
+                              child: Material(
+                                borderRadius: BorderRadius.circular(12),
+                                child: InkWell(
+                                  onLongPress: () async {
 
-                      )
+                                    await _adminController.queueFunctionCallDeleteHours(id: e.id);
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      e.time,
+                                      style:const TextStyle(fontSize: 26,fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ],
-                    color: Colors.white,
-                    ),
-                    width: sizes.width,
-                    child: Text(e.time),
-                  ))
-                      .toList(),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
                   _showTimePicker(sizes),
                 ],
               );

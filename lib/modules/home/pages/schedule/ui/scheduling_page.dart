@@ -106,9 +106,7 @@ class _SchedulingPageState extends State<SchedulingPage> {
         fixedSize: Size(MediaQuery.of(context).size.width, 40.0),
       ),
       onPressed: () async {
-
         await _scheduleController.insertSchedule();
-
         _scheduleController.clearValuesForNewDate();
       },
       child: const Text(

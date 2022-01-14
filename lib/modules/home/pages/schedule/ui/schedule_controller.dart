@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:schedule_app_admin/app/models/user_model.dart';
+import 'package:schedule_app_admin/app/service/shared_preferences_service.dart';
 import 'package:schedule_app_admin/app/ui/handler_messages/handler_messages.dart';
 import 'package:schedule_app_admin/app/ui/loader/loader_mixin.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/models/configuration_day_scheduler.dart';
@@ -12,9 +14,11 @@ import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 class ScheduleController extends GetxController with LoaderMixin, MessageMixin {
   final ScheduleService _scheduleService;
   final HomeService _homeService;
+  final SharedPreferencesService _sharedPreferencesService;
 
-  ScheduleController({required ScheduleService scheduleService,required HomeService homeService})
-      : _scheduleService = scheduleService,_homeService=homeService;
+
+  ScheduleController({required ScheduleService scheduleService,required HomeService homeService, required SharedPreferencesService sharedPreferencesService})
+      : _scheduleService = scheduleService,_homeService=homeService,_sharedPreferencesService = sharedPreferencesService;
 
   final _loading = Rx<bool>(false);
   final _messages = Rxn<MessageModel>();
@@ -77,27 +81,32 @@ class ScheduleController extends GetxController with LoaderMixin, MessageMixin {
        }
      }
    }
-
-    _loading(false);
+   _loading(false);
   }
 
   Future<void> insertSchedule() async {
-    _loading(true);
-    var res = await _scheduleService.createSchedule(
-        nameClient: 'Error',
-        dateSchedule: dateSelectedSchedule,
-        serviceId: serviceIdSelected.value,
-        idHour: idHour.value,
-        idUser: '');
-    _loading(false);
-    res.fold(
-      (l) =>
-          _messages(MessageModel.error(title: 'Error', message: l.toString())),
-      (r) => _messages(
-        _messages(MessageModel.info(
-            title: 'Sucesso', message: 'Sucesso ao registrar')),
-      ),
-    );
+    UserModel? user = await _sharedPreferencesService.getUserModel();
+    if(user!=null){
+      _loading(true);
+      var res = await _scheduleService.createSchedule(
+          nameClient: user.name,
+          dateSchedule: dateSelectedSchedule,
+          serviceId: serviceIdSelected.value,
+          idHour: idHour.value,
+          idUser: user.id);
+      _loading(false);
+      res.fold(
+            (l) =>
+            _messages(MessageModel.error(title: 'Error', message: l.toString())),
+            (r) => _messages(
+          _messages(MessageModel.info(
+              title: 'Sucesso', message: 'Sucesso ao registrar')),
+        ),
+      );
+    }else{
+      _messages(MessageModel.error(title: 'Error', message: 'Dados do usuário estão incorretos'));
+    }
+
   }
 
   Future<bool> getServices() async {

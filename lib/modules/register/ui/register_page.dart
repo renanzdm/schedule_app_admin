@@ -171,17 +171,13 @@ class RegisterContent extends StatelessWidget {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      var response = await _registerController.registerFirebase(
+                      var response = await _registerController.registerUser(
                           email: _emailController.text,
                           password: _passwordController.text,
                           name: _nameController.text,
                           phone: _phoneController.text
                               .replaceAll(RegExp(r'\D'), ''));
-                      if (response != null) {
-                        SharedPreferencesService _sharedPreferences =
-                            Get.find<SharedPreferencesService>();
-                        await _sharedPreferences.clearPreferences();
-                        await _sharedPreferences.setUserModel(user: response);
+                      if (response ) {
                         await Future.delayed(const Duration(seconds: 3));
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/login', (route) => false);

@@ -19,7 +19,7 @@ abstract class ScheduleRepository {
       required DateTime dateSchedule,
       required int serviceId,
       required int idHour,
-      required String idUser});
+      required int idUser});
 
   Future<ResultGetServices> getServices();
 

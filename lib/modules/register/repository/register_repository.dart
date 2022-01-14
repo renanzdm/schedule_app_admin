@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:schedule_app_admin/app/models/user_model.dart';
 import 'package:schedule_app_admin/modules/register/errors/register_errors.dart';
 
-typedef RegisterResultResponse = Either<RegisterErrors, UserModel>;
+typedef RegisterResultResponse = Either<RegisterErrors, bool>;
 
 abstract class RegisterRepository {
   Future<RegisterResultResponse> registerFirebase({

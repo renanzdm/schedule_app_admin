@@ -1,6 +1,6 @@
 
 import 'package:get/get.dart';
-import 'package:schedule_app_admin/app/models/token_model.dart';
+import 'package:schedule_app_admin/app/models/user_model.dart';
 import 'package:schedule_app_admin/app/service/shared_preferences_service.dart';
 import 'package:schedule_app_admin/app/ui/handler_messages/handler_messages.dart';
 import 'package:schedule_app_admin/app/ui/loader/loader_mixin.dart';
@@ -24,24 +24,22 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
     messageListener(messages);
   }
 
-  Future<TokenModel?> loginEmailAndPassword(
+  Future<UserModel> loginEmailAndPassword(
       {required String email, required String password}) async {
-    TokenModel? tokenModel;
+    UserModel userModel = const UserModel(name: '', phone: '', id: -1, accessToken: '');
     loading(true);
     var response = await _loginService.login(email: email, password: password);
     loading(false);
     response.fold(
-      (err) {
+          (err) {
         messages(MessageModel.error(
             title: 'Erro ao realizar login', message: err.error));
       },
-      (token) {
-        tokenModel = token;
+          (user) {
+        userModel = user;
       },
     );
-    await _sharedPreferencesService.clearPreferences();
-    await _sharedPreferencesService.setToken(
-        token: tokenModel!.accessToken);
-    return tokenModel;
+    await _sharedPreferencesService.setUserModel(user: userModel);
+    return userModel;
   }
 }

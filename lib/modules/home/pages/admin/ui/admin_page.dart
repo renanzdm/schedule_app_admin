@@ -61,7 +61,7 @@ class AdminPage extends StatelessWidget {
                       CardOptionsAdmin(
                         height: sizes.height * .2,
                         width: sizes.width * .4,
-                        icon: Icons.animation,
+                        icon: Icons.shopping_cart_outlined,
                         title: 'Adicionar novos serviços',
                         onTap: () {
                           Navigator.of(context).pushNamed('/add_services');

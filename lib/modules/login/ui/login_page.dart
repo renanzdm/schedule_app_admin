@@ -137,7 +137,7 @@ class LoginContent extends StatelessWidget {
                           await _loginController.loginEmailAndPassword(
                               email: _emailController.text,
                               password: _passwordController.text);
-                      if (response!=null) {
+                      if (response.accessToken.isNotEmpty) {
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/home', (route) => false);
                       }

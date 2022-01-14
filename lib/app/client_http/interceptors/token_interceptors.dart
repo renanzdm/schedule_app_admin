@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:schedule_app_admin/app/models/token_model.dart';
+import 'package:schedule_app_admin/app/models/user_model.dart';
 import 'package:schedule_app_admin/app/service/shared_preferences_service.dart';
-import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
 
 class TokenInterceptor extends InterceptorsWrapper {
   final SharedPreferencesService _sharedPreferences =
@@ -12,7 +11,7 @@ class TokenInterceptor extends InterceptorsWrapper {
   @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    TokenModel? tokenModel = await _sharedPreferences.getToken();
+    UserModel? tokenModel = await _sharedPreferences.getUserModel();
     options.headers.addAll({
       'Authorization': tokenModel != null && tokenModel.accessToken.isNotEmpty
           ? 'Bearer ${tokenModel.accessToken}'

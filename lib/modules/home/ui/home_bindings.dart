@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/client_http/client_http.dart';
+import 'package:schedule_app_admin/app/service/shared_preferences_service.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/admin_controller.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/repositories/schedule_repository_impl.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/services/schedule_service_impl.dart';
@@ -28,6 +29,6 @@ class HomeBindings implements Bindings {
         scheduleRepository: Get.find<ScheduleRepositoryImpl>()));
     Get.lazyPut(() => ScheduleController(
         scheduleService: Get.find<ScheduleServiceImpl>(),
-        homeService: Get.find<HomeServiceImpl>()));
+        homeService: Get.find<HomeServiceImpl>(),sharedPreferencesService: Get.find<SharedPreferencesService>()));
   }
 }

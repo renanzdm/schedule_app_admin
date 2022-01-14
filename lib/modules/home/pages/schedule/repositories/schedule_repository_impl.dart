@@ -22,7 +22,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       required DateTime dateSchedule,
       required int serviceId,
       required int idHour,
-      required String idUser}) async {
+      required int idUser}) async {
     try {
   
       var response = await _clientHttp.post('/schedule/createSchedule', data: {
