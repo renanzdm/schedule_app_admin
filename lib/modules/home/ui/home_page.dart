@@ -12,9 +12,11 @@ class HomePage extends StatelessWidget {
     const SchedulingPage(),
    // const ProductsPage(),
    // const ServicesPage(),
-    const AdminPage(),
+     AdminPage(),
   ];
   final bottomNavigationController = Get.find<BottomNavigationBarController>();
+
+
 
   @override
   Widget build(BuildContext context) {

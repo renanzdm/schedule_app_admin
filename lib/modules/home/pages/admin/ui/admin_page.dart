@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/padding_default.dart';
+import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 
 import 'widgets/card_options_admin.dart';
 
 class AdminPage extends StatelessWidget {
-  const AdminPage({Key? key}) : super(key: key);
+  AdminPage({Key? key}) : super(key: key);
+  final _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +49,8 @@ class AdminPage extends StatelessWidget {
                         icon: Icons.alarm_add,
                         title: 'Adicionar Novos Horários',
                         onTap: () {
+                          _homeController.clearValuesForNewDate();
+
                           Navigator.of(context).pushNamed('/add_hours');
                         },
                       ),
@@ -55,6 +60,8 @@ class AdminPage extends StatelessWidget {
                         icon: Icons.post_add,
                         title: 'Adicionar novas vagas',
                         onTap: () {
+                          _homeController.clearValuesForNewDate();
+
                           Navigator.of(context).pushNamed('/add_vacancy');
                         },
                       ),
@@ -64,7 +71,18 @@ class AdminPage extends StatelessWidget {
                         icon: Icons.shopping_cart_outlined,
                         title: 'Adicionar novos serviços',
                         onTap: () {
+                          _homeController.clearValuesForNewDate();
                           Navigator.of(context).pushNamed('/add_services');
+                        },
+                      ),
+                       CardOptionsAdmin(
+                        height: sizes.height * .2,
+                        width: sizes.width * .4,
+                        icon: Icons.list_outlined,
+                        title: 'Todos Agendamentos',
+                        onTap: () {
+                          _homeController.clearValuesForNewDate();
+                          Navigator.of(context).pushNamed('/all_schedules');
                         },
                       ),
                     ],

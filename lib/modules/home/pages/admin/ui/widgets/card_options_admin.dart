@@ -21,6 +21,7 @@ class CardOptionsAdmin extends StatelessWidget {
     return Container(
       height: height,
       width: width,
+      padding: const EdgeInsets.all(16) ,
       margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: Colors.white,

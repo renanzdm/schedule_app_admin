@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
 
-
 class TextFormFieldWidget extends StatefulWidget {
   final String? labelText;
   final TextEditingController controller;
@@ -11,13 +10,16 @@ class TextFormFieldWidget extends StatefulWidget {
   final IconData? suffixIconPassword;
   final List<TextInputFormatter>? formatters;
   final bool isPasswordField;
+  final int maxLines;
 
   const TextFormFieldWidget({
     Key? key,
     this.labelText = '',
     required this.controller,
     this.validator,
-    required this.suffixIcon, this.formatters,
+    required this.suffixIcon,
+    this.formatters,
+    this.maxLines=1,
   })  : isPasswordField = false,
         suffixIconPassword = null,
         super(key: key);
@@ -27,7 +29,9 @@ class TextFormFieldWidget extends StatefulWidget {
     this.labelText,
     required this.controller,
     this.validator,
-    required this.isPasswordField, this.formatters,
+    required this.isPasswordField,
+    this.formatters,
+    this.maxLines=1,
   })  : suffixIcon = Icons.visibility_outlined,
         suffixIconPassword = Icons.visibility_off_outlined,
         super(key: key);
@@ -37,8 +41,8 @@ class TextFormFieldWidget extends StatefulWidget {
 }
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
+  bool _passwordField = false;
 
-  bool _passwordField=false;
   @override
   void initState() {
     _passwordField = widget.isPasswordField;
@@ -47,31 +51,34 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return TextFormField(
-      inputFormatters:widget.formatters,
+      inputFormatters: widget.formatters,
       obscureText: _passwordField,
       validator: widget.validator,
       controller: widget.controller,
-      style:const TextStyle(color: Colors.white),
+      maxLines: widget.maxLines,
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
+
         suffixIcon: widget.isPasswordField
             ? IconButton(
-          color: Colors.white,
-          onPressed: () {
-            setState(() {
-              if (widget.isPasswordField) {
-                _passwordField = !_passwordField;
-              }
-            });
-          },
-          icon: Icon(_passwordField
-              ? widget.suffixIconPassword
-              : widget.suffixIcon),
-        ): Icon(
-          widget.suffixIcon,
-          color: Colors.white,
-        ),
+                color: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    if (widget.isPasswordField) {
+                      _passwordField = !_passwordField;
+                    }
+                  });
+                },
+                icon: Icon(_passwordField
+                    ? widget.suffixIconPassword
+                    : widget.suffixIcon),
+              )
+            : Icon(
+                widget.suffixIcon,
+                color: Colors.white,
+
+              ),
         labelText: widget.labelText,
         labelStyle: const TextStyle(
           color: Colors.white,

@@ -27,13 +27,13 @@ class TimesModel {
     return TimesModel(
       id: map['id'] ?? 0,
       qtdSchedulerPerHour: 1,
-      time: _formatTimeExecutionService(time: map['time'] ?? ''),
+      time: formatTime(time: map['time'] ?? ''),
     );
   }
 
   @override
   String toString() => 'TimesModel(id: $id, time: $time,qtdSchedulerPerHour: $qtdSchedulerPerHour)';
 
-  static String _formatTimeExecutionService({required String time}) =>
+  static String formatTime({required String time}) =>
       time.substring(0, 5);
 }

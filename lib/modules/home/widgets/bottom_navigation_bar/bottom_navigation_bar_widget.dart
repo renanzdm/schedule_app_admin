@@ -41,7 +41,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.card_travel_sharp),
-              label: 'Admin',
+              label: 'Administrador',
             ),
           ],
         );

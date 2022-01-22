@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:schedule_app_admin/app/ui/widgets/error_loaded_widget.dart';
-import 'package:schedule_app_admin/modules/home/pages/schedule/ui/schedule_controller.dart';
-
 import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
+import 'package:schedule_app_admin/app/ui/widgets/error_loaded_widget.dart';
+import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 
 class ListTimesWidget extends StatelessWidget {
   ListTimesWidget({Key? key}) : super(key: key);
 
-  final _scheduleController = Get.find<ScheduleController>();
+  final _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,33 +16,29 @@ class ListTimesWidget extends StatelessWidget {
       width: sizes.width,
       child: Obx(
         () {
-          if (_scheduleController.listOfTimes.isNotEmpty) {
+          if (_homeController.listOfTimes.isNotEmpty) {
             return Wrap(
               alignment: WrapAlignment.center,
               spacing: 20,
               runSpacing: 20,
-              children: _scheduleController.listOfTimes
+              children: _homeController.listOfTimes
                   .map(
                     (element) => AnimatedContainer(
                       key: UniqueKey(),
-                      width: _scheduleController.idHour.value ==
-                              element.id
+                      width: _homeController.idHour.value == element.id
                           ? 55
                           : 50,
-                      height: _scheduleController.idHour.value ==
-                              element.id
+                      height: _homeController.idHour.value == element.id
                           ? 55
                           : 50,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
-                          border: _scheduleController.idHour.value ==
-                                  element.id
+                          border: _homeController.idHour.value == element.id
                               ? Border.all(color: context.themeRed, width: 3)
                               : null,
                           boxShadow:
-                              _scheduleController.idHour.value ==
-                                      element.id
+                              _homeController.idHour.value == element.id
                                   ? <BoxShadow>[
                                       const BoxShadow(
                                         color: Colors.black,
@@ -61,21 +56,59 @@ class ListTimesWidget extends StatelessWidget {
                           onTap: element.qtdSchedulerPerHour == 0
                               ? null
                               : () {
-                                  _scheduleController.setIdHour(
-                                      id: element.id);
+                                  _homeController.setIdHour(id: element.id);
                                 },
-                          child: Center(
-                            child: Text(
-                              element.time,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: element.qtdSchedulerPerHour == 0
-                                      ? TextDecoration.lineThrough
-                                      : null,
-                                  color: element.qtdSchedulerPerHour == 0
-                                      ? Colors.grey.shade600
-                                      : Colors.black),
-                            ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                element.time,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    decoration:
+                                        element.qtdSchedulerPerHour == 0
+                                            ? TextDecoration.lineThrough
+                                            : null,
+                                    color: element.qtdSchedulerPerHour == 0
+                                        ? Colors.grey.shade600
+                                        : Colors.black),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  text: 'Vagas: ',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 8,
+                                      decoration:
+                                      element.qtdSchedulerPerHour == 0
+                                          ? TextDecoration.lineThrough
+                                          : null,
+                                      color: element.qtdSchedulerPerHour == 0
+                                          ? Colors.grey.shade600
+                                          : Colors.black),
+                                  children: [
+                                    TextSpan(
+                                        text: element.qtdSchedulerPerHour
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            decoration:
+                                                element.qtdSchedulerPerHour ==
+                                                        0
+                                                    ? TextDecoration
+                                                        .lineThrough
+                                                    : null,
+                                            color:
+                                                element.qtdSchedulerPerHour ==
+                                                        0
+                                                    ? Colors.grey.shade600
+                                                    : Colors.black))
+                                  ],
+
+                                ),
+                              ),
+                            ],
                           ),
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -87,10 +120,10 @@ class ListTimesWidget extends StatelessWidget {
                   )
                   .toList(),
             );
-          } else if (_scheduleController.errorGetTimes.isNotEmpty) {
+          } else if (_homeController.errorGetTimes.isNotEmpty) {
             return ErrorLoadedWidget(
-              error: _scheduleController.errorGetTimes.value,
-              reloadFunction: _scheduleController.getTimes,
+              error: _homeController.errorGetTimes.value,
+              reloadFunction: _homeController.getTimes,
             );
           } else {
             return const SizedBox.shrink();

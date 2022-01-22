@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:schedule_app_admin/app/utils/utils.dart';
-import 'package:schedule_app_admin/modules/home/pages/schedule/ui/schedule_controller.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
+import 'package:schedule_app_admin/app/utils/utils.dart';
+import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 
 
 class ServiceItemWidget extends StatelessWidget {
   final String name;
-  final double price;
+  final int price;
   final String description;
   final int id;
 
@@ -18,7 +18,7 @@ class ServiceItemWidget extends StatelessWidget {
       required this.description,
       required this.id})
       : super(key: key);
-  final _scheduleController = Get.find<ScheduleController>();
+  final _homeControlle = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ServiceItemWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            boxShadow: _scheduleController.serviceIdSelected.value == id
+            boxShadow: _homeControlle.serviceIdSelected.value == id
                 ? <BoxShadow>[
                     const BoxShadow(
                       color: Colors.black,
@@ -41,8 +41,8 @@ class ServiceItemWidget extends StatelessWidget {
                     )
                   ]
                 : <BoxShadow>[]),
-        height: _scheduleController.serviceIdSelected.value == id ? 80 : 75,
-        width: _scheduleController.serviceIdSelected.value == id
+        height: _homeControlle.serviceIdSelected.value == id ? 80 : 75,
+        width: _homeControlle.serviceIdSelected.value == id
             ? width
             : width - 30,
         child: Material(
@@ -51,13 +51,13 @@ class ServiceItemWidget extends StatelessWidget {
               Radius.circular(16),
             ),
           ),
-          color: _scheduleController.serviceIdSelected.value == id
+          color: _homeControlle.serviceIdSelected.value == id
               ? context.themeRed
               : Colors.white,
           child: InkWell(
              borderRadius:BorderRadius.circular(12),
             onTap: () async {
-              _scheduleController.setIdServiceSelected(id: id);
+              _homeControlle.setIdServiceSelected(id: id);
           
             },
             child: Row(
@@ -70,10 +70,10 @@ class ServiceItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      Utils.formatDoubleForMoney(price: price),
+                      Utils.formatForMoney(price: price),
                       style: TextStyle(
                           color:
-                              _scheduleController.serviceIdSelected.value == id
+                              _homeControlle.serviceIdSelected.value == id
                                   ? Colors.white
                                   : Colors.black,
                           fontWeight: FontWeight.bold,
@@ -94,7 +94,7 @@ class ServiceItemWidget extends StatelessWidget {
                         name,
                         style: TextStyle(
                             color:
-                                _scheduleController.serviceIdSelected.value ==
+                                _homeControlle.serviceIdSelected.value ==
                                         id
                                     ? Colors.white
                                     : Colors.black,
@@ -107,7 +107,7 @@ class ServiceItemWidget extends StatelessWidget {
                         description,
                         style: TextStyle(
                           color:
-                              _scheduleController.serviceIdSelected.value == id
+                              _homeControlle.serviceIdSelected.value == id
                                   ? Colors.white
                                   : Colors.black54,
                           fontSize: 12,

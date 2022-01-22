@@ -1,9 +1,11 @@
-import 'package:schedule_app_admin/modules/home/pages/schedule/repositories/schedule_repository.dart';
 import 'package:schedule_app_admin/modules/home/repositories/home_repository_impl.dart';
 import 'package:schedule_app_admin/modules/home/services/home_service.dart';
 
-class HomeServiceImpl implements HomeService{
+import '../models/return_types.dart';
+
+class HomeServiceImpl implements HomeService {
   final HomeRepositoryImpl _homeRepositoryImpl;
+
   HomeServiceImpl({required HomeRepositoryImpl homeRepositoryImpl})
       : _homeRepositoryImpl = homeRepositoryImpl;
 
@@ -17,6 +19,24 @@ class HomeServiceImpl implements HomeService{
 
   @override
   Future<ResultGetSchedulesByDate> getScheduleByDate(
-      {required DateTime date}) async =>
+          {required String date}) async =>
       _homeRepositoryImpl.getScheduleByDate(date: date);
+
+  @override
+  Future<ResultConfigurationDayScheduler> getConfigurationDaySelected(
+          {required String date}) async =>
+      _homeRepositoryImpl.getConfigurationDaySelected(date: date);
+  @override
+  Future<ResultInsertSchedule> createSchedule(
+      {required String nameClient,
+        required String dateSchedule,
+        required int serviceId,
+        required int idHour,
+        required int idUser}) async =>
+      _homeRepositoryImpl.createSchedule(
+          nameClient: nameClient,
+          dateSchedule: dateSchedule,
+          serviceId: serviceId,
+          idHour: idHour,
+          idUser: idUser);
 }

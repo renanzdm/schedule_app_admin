@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/modules/register/ui/register_module.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+
 import 'app/app_binding/app_bindings.dart';
 import 'app/ui/theme_default/manager_ui_theme.dart';
 import 'modules/home/ui/home_module.dart';
@@ -11,7 +12,6 @@ import 'modules/splash/splash_module.dart';
 
 
 main() async {
-
   runApp(const MyApp());
 }
 

@@ -16,21 +16,22 @@ class Utils {
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   }
 
-  static String formatDoubleForMoney({required double price,String monetarySymbol='R\$'}) {
-    String valueFormatted='';
-    String valueForString = price.toStringAsPrecision(2);
-    List<String> listStrings = valueForString.split('.');
-    if (listStrings.length == 1) {
-      String value = listStrings.first;
-    valueFormatted = value + ',' + '00';
-    } else if (listStrings.length > 1) {
-      String valueOfDot = listStrings[1];
-      if (valueOfDot.length == 1) {
-        valueOfDot = valueOfDot + '0';
+  static String formatForMoney(
+      {required int price, String monetarySymbol = 'R\$'}) {
+      String valueString = price.toString();
+      var listChars = valueString.split('').reversed.toList();
+      for(int i=0;i<listChars.length;i++){
+        if(i==2){
+          listChars.insert(i,',');
+        }
+        if(i!=0&&i%6==0){
+          listChars.insert(i,'.');
+        }
+
+
       }
-     valueFormatted =listStrings[0] + "," + valueOfDot;
-    }
-    return '$monetarySymbol $valueFormatted';
+      return listChars.reversed.join();
+
   }
 
   static String getTimeString(int min) {
@@ -38,8 +39,4 @@ class Utils {
     final int minutes = min % 60;
     return '${hour.toString().padLeft(2, "0")}:${minutes.toString().padLeft(2, "0")}';
   }
-
-
-
-
 }

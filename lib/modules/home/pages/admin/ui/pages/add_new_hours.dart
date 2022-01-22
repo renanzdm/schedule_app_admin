@@ -33,7 +33,7 @@ class _AddNewHoursState extends State<AddNewHours> {
           },
         );
       if(time!=null) {
-        await _adminController.queueFunctionCallInsertNewHours(time: time);
+        await _adminController.insertNewHours(time: time);
       }
       },
       child: const Text(
@@ -56,6 +56,7 @@ class _AddNewHoursState extends State<AddNewHours> {
         child: Padding(
           padding: PaddingDefault.screenPaddingHorizontal,
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Obx(() {
               return Column(
                 children: [
@@ -100,8 +101,7 @@ class _AddNewHoursState extends State<AddNewHours> {
                                 borderRadius: BorderRadius.circular(12),
                                 child: InkWell(
                                   onLongPress: () async {
-
-                                    await _adminController.queueFunctionCallDeleteHours(id: e.id);
+                                    await _adminController.deleteTime(id: e.id);
                                   },
                                   child: Center(
                                     child: Text(

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/ui/widgets/error_loaded_widget.dart';
-import 'package:schedule_app_admin/modules/home/pages/schedule/ui/schedule_controller.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/widgets/service_item_widget.dart';
+import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 
 
 class ListServicesWidget extends StatelessWidget {
   ListServicesWidget({Key? key}) : super(key: key);
-  final _scheduleController = Get.find<ScheduleController>();
+  final _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () {
-        if (_scheduleController.listOfServices.isNotEmpty) {
+        if (_homeController.listOfServices.isNotEmpty) {
           return Column(
-            children: _scheduleController.listOfServices
+            children: _homeController.listOfServices
                 .map<Widget>((service) => ServiceItemWidget(
                       name: service.name,
                       price: service.price,
@@ -24,10 +24,10 @@ class ListServicesWidget extends StatelessWidget {
                     ))
                 .toList(),
           );
-        } else if (_scheduleController.errorGetServices.isNotEmpty) {
+        } else if (_homeController.errorGetServices.isNotEmpty) {
           return ErrorLoadedWidget(
-            error: _scheduleController.errorGetServices.value,
-            reloadFunction: _scheduleController.getServices,
+            error: _homeController.errorGetServices.value,
+            reloadFunction: _homeController.getServices,
           );
         } else {
           return const SizedBox.shrink();

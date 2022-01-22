@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/padding_default.dart';
-import 'package:schedule_app_admin/modules/home/pages/schedule/ui/schedule_controller.dart';
-import 'package:schedule_app_admin/modules/home/pages/schedule/widgets/calendar_widget.dart';
+import 'package:schedule_app_admin/app/ui/widgets/calendar_widget.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/widgets/list_services_widget.dart';
 import 'package:schedule_app_admin/modules/home/pages/schedule/widgets/list_times_widget.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
-
-
+import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class SchedulingPage extends StatefulWidget {
   const SchedulingPage({Key? key}) : super(key: key);
@@ -18,9 +17,7 @@ class SchedulingPage extends StatefulWidget {
 
 class _SchedulingPageState extends State<SchedulingPage> {
   final _scrollController = ScrollController();
-  final _scheduleController = Get.find<ScheduleController>();
-
-
+  final _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +48,18 @@ class _SchedulingPageState extends State<SchedulingPage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    CalendarWidget(),
+                    CalendarWidget(
+                      dateSelected: _homeController.dateSelectedSchedule,
+                      onTap: (CalendarTapDetails details) async {
+                         _homeController.setDateSchedule(
+                            date: details.date ?? DateTime.now());
+                        await _homeController.onTapDateWidget();
+                      },
+                    ),
                     const SizedBox(
                       height: 30,
                     ),
-                    if (_scheduleController.listOfServices.isNotEmpty)
+                    if (_homeController.listOfServices.isNotEmpty)
                       const Text(
                         'Escolha o Servico que deseja',
                         style: TextStyle(
@@ -67,7 +71,7 @@ class _SchedulingPageState extends State<SchedulingPage> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (_scheduleController.listOfTimes.isNotEmpty)
+                    if (_homeController.listOfTimes.isNotEmpty)
                       const Text(
                         'Escolha um horario',
                         style: TextStyle(
@@ -82,8 +86,8 @@ class _SchedulingPageState extends State<SchedulingPage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    _scheduleController.serviceIdSelected.value != -1 &&
-                            _scheduleController.idHour.value != -1
+                    _homeController.serviceIdSelected.value != -1 &&
+                            _homeController.idHour.value != -1
                         ? _saveButton()
                         : const SizedBox.shrink(),
                     const SizedBox(
@@ -106,8 +110,8 @@ class _SchedulingPageState extends State<SchedulingPage> {
         fixedSize: Size(MediaQuery.of(context).size.width, 40.0),
       ),
       onPressed: () async {
-        await _scheduleController.insertSchedule();
-        _scheduleController.clearValuesForNewDate();
+        await _homeController.insertSchedule();
+        _homeController.clearValuesForNewDate();
       },
       child: const Text(
         'Salvar',

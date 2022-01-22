@@ -4,6 +4,7 @@ import 'package:schedule_app_admin/modules/home/pages/admin/ui/admin_bindings.da
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/pages/add_new_hours.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/pages/add_new_services.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/pages/add_new_vacancy.dart';
+import 'package:schedule_app_admin/modules/home/pages/admin/ui/pages/all_schedules.dart';
 
 import 'home_bindings.dart';
 import 'home_page.dart';
@@ -29,7 +30,12 @@ class HomeModule implements Module {
     ),
     GetPage(
       name: '/add_services',
-      page: () => const AddNewServices(),
+      page: () =>  AddNewServices(),
+      binding: AdminBindings(),
+    ),
+    GetPage(
+      name: '/all_schedules',
+      page: () =>const  AllSchedules(),
       binding: AdminBindings(),
     ),
   ];

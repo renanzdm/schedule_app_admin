@@ -14,8 +14,8 @@ class ScheduleUnknownError extends ScheduleErrors {
       : super(error);
 }
 
-class ScheduleNotPossible extends ScheduleErrors {
-  ScheduleNotPossible(
+class SchedulingIsNotPossible extends ScheduleErrors {
+  SchedulingIsNotPossible(
       {String error = 'Nao foi possivel realizar o agendamento do servico'})
       : super(error);
 }

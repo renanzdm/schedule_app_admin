@@ -1,4 +1,5 @@
-import 'package:schedule_app_admin/modules/home/pages/schedule/repositories/schedule_repository.dart';
+
+import '../models/return_types.dart';
 
 abstract class HomeRepository{
 
@@ -8,6 +9,15 @@ abstract class HomeRepository{
 
   Future<ResultGetTimeFreeOnDaySelected> getTimes();
 
-  Future<ResultGetSchedulesByDate> getScheduleByDate({required DateTime date});
+  Future<ResultGetSchedulesByDate> getScheduleByDate({required String date});
+
+  Future<ResultConfigurationDayScheduler> getConfigurationDaySelected(
+      {required String date});
+  Future<ResultInsertSchedule> createSchedule(
+      {required String nameClient,
+        required String dateSchedule,
+        required int serviceId,
+        required int idHour,
+        required int idUser});
 
 }

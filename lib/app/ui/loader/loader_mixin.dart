@@ -7,8 +7,7 @@ mixin LoaderMixin on GetxController {
       loaderRx,
       (loading) async {
         if (loading) {
-          if (Get.isSnackbarOpen) Get.back();
-          await Get.dialog(
+           Get.dialog(
               Center(
                 child: CircularProgressIndicator(
                   color: Colors.redAccent.shade700,
