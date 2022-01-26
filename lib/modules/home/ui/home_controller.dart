@@ -37,6 +37,8 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
   DateTime dateSelectedSchedule = DateTime.now();
   RxInt serviceIdSelected = RxInt(-1);
   RxInt idHour = RxInt(-1);
+  String nameService='';
+  String hourName='';
 
   @override
   Future<void> onReady() async {
@@ -78,6 +80,8 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
   void setIdServiceSelected({required int id}) => serviceIdSelected.value = id;
 
   void setIdHour({required int id}) => idHour.value = id;
+  void setNameService({required String name}) => nameService = name;
+  void setHour({required String hour}) => hourName = hour;
 
   Future<void> insertSchedule() async {
     UserModel? user = await _sharedPreferencesService.getUserModel();
@@ -88,7 +92,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
           dateSchedule: '${dateSelectedSchedule.year}-${dateSelectedSchedule.month}-${dateSelectedSchedule.day}',
           serviceId: serviceIdSelected.value,
           idHour: idHour.value,
-          idUser: user.id);
+          idUser: user.id,nameService: nameService,hour: hourName);
       _loading(false);
       res.fold(
             (l) =>

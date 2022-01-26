@@ -77,16 +77,18 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<ResultConfigurationDayScheduler> getConfigurationDaySelected(
       {required String date}) async {
     try {
-      var response = await _hasuraConnect.getConnect.query(
-          ScheduleQueries.getConfigurationDaySelected,
-          variables: {
-            'date': date,
-          });
-      List listDatesWithConfig = response['data']['app_configuration_day_scheduler'];
+      var response = await _hasuraConnect.getConnect
+          .query(ScheduleQueries.getConfigurationDaySelected, variables: {
+        'date': date,
+      });
+      List listDatesWithConfig =
+          response['data']['app_configuration_day_scheduler'];
       if (listDatesWithConfig.isNotEmpty) {
-        return right(listDatesWithConfig.map<DateWithConfigModel>((e) => DateWithConfigModel.fromMap(e)).toList());
+        return right(listDatesWithConfig
+            .map<DateWithConfigModel>((e) => DateWithConfigModel.fromMap(e))
+            .toList());
       } else {
-        return  left(ScheduleListServicesIsEmpty( error:'Lista está vazia'));
+        return left(ScheduleListServicesIsEmpty(error: 'Lista está vazia'));
       }
     } catch (e) {
       log(e.toString());
@@ -97,28 +99,31 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<ResultInsertSchedule> createSchedule(
       {required String nameClient,
-        required String dateSchedule,
-        required int serviceId,
-        required int idHour,
-        required int idUser}) async {
+      required String dateSchedule,
+      required int serviceId,
+      required int idHour,
+      required int idUser,
+      required String nameService,
+      required hour}) async {
     try {
-
-      var response = await _hasuraConnect.getConnect.mutation(ScheduleQueries.insertSchedule, variables: {
+      var response = await _hasuraConnect.getConnect
+          .mutation(ScheduleQueries.insertSchedule, variables: {
         'name_client': nameClient,
         'date_schedule': dateSchedule,
         'id_hour': idHour,
         'service_id': serviceId,
-        'id_user': idUser
+        'id_user': idUser,
+        'name_service': nameService,
+        'hour': hour
       });
       if (response['data']['insert_app_schedules']['affected_rows'] >= 1) {
         return right(true);
       } else {
-        return left(SchedulingIsNotPossible(error: 'Não foi possível criar o agendamento'));
+        return left(SchedulingIsNotPossible(
+            error: 'Não foi possível criar o agendamento'));
       }
     } catch (e, s) {
       return left(ScheduleUnknownError());
     }
   }
-
-
 }

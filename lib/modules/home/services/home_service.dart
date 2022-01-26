@@ -8,12 +8,14 @@ abstract class HomeService{
 
   Future<ResultConfigurationDayScheduler> getConfigurationDaySelected(
       {required String date});
-  Future<ResultInsertSchedule> createSchedule(
+ Future<ResultInsertSchedule> createSchedule(
       {required String nameClient,
-        required String dateSchedule,
-        required int serviceId,
-        required int idHour,
-        required int idUser});
+      required String dateSchedule,
+      required int serviceId,
+      required int idHour,
+      required int idUser,
+      required String nameService,
+      required String hour});
 
 
 }

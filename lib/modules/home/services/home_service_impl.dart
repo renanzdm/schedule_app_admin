@@ -28,15 +28,19 @@ class HomeServiceImpl implements HomeService {
       _homeRepositoryImpl.getConfigurationDaySelected(date: date);
   @override
   Future<ResultInsertSchedule> createSchedule(
-      {required String nameClient,
-        required String dateSchedule,
-        required int serviceId,
-        required int idHour,
-        required int idUser}) async =>
+          {required String nameClient,
+          required String dateSchedule,
+          required int serviceId,
+          required int idHour,
+          required int idUser,
+          required String nameService,
+          required hour}) async =>
       _homeRepositoryImpl.createSchedule(
           nameClient: nameClient,
           dateSchedule: dateSchedule,
           serviceId: serviceId,
           idHour: idHour,
-          idUser: idUser);
+          idUser: idUser,
+          hour: hour,
+          nameService: nameService);
 }

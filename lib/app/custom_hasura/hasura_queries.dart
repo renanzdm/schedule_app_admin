@@ -1,7 +1,7 @@
 class ScheduleQueries {
   static String get insertSchedule => r'''
-  mutation insertOneSchedule($name_client: String!,$date_schedule: date,$id_hour: Int!,$service_id: Int!,$id_user: Int!){
-  insert_app_schedules(objects: {name_client: $name_client, date_schedule: $date_schedule,id_hour: $id_hour, service_id: $service_id,id_user: $id_user}) {
+mutation insertOneSchedule($name_client: String!, $date_schedule: date, $id_hour: Int!, $service_id: Int!, $id_user: Int!,$hour: String!, $name_service: String!) {
+  insert_app_schedules(objects: {name_client: $name_client, date_schedule: $date_schedule, id_hour: $id_hour, service_id: $service_id, id_user: $id_user, hour: $hour, name_service:$name_service}) {
     affected_rows
   }
 }
@@ -38,7 +38,6 @@ query MyQuery($date: date!) {
   }
 }''';
 
-
   static String get insertNewServices => r'''
 mutation MyMutation($description: String!, $name: String!, $price: Int!) {
   insert_app_services(objects: {description: $description, name: $name, price: $price}) {
@@ -63,7 +62,7 @@ mutation MyMutation($date: date!, $id_hour: Int!, $qtd_of_scheduler: Int!) {
 }
 ''';
 
-  static String get deleteTimes =>r'''
+  static String get deleteTimes => r'''
 mutation MyMutation($id: Int!) {
   delete_app_times(where: {id: {_eq: $id}}) {
     affected_rows
@@ -71,14 +70,14 @@ mutation MyMutation($id: Int!) {
 }
 ''';
 
-  static String get getConfigsPerDateAndHour=>r'''
+  static String get getConfigsPerDateAndHour => r'''
 query MyQuery($date: date!,$id_hour: Int!) {
   app_configuration_day_scheduler(where: {date_scheduler: {_eq: $date}, _and: {id_hour: {_eq: $id_hour}}}) {
     id
   }
 }''';
 
-  static String get updateQtdConfigDay =>r'''
+  static String get updateQtdConfigDay => r'''
 mutation MyMutation($id_config: Int!,$qtd_of_scheduler: Int!) {
   update_app_configuration_day_scheduler(where: {id: {_eq: $id_config}}, _set: {qtd_of_scheduler: $qtd_of_scheduler}) {
     affected_rows
@@ -86,7 +85,8 @@ mutation MyMutation($id_config: Int!,$qtd_of_scheduler: Int!) {
 }
 ''';
 
-  static String get getConfigurationDaySelected =>r'''query MyQuery($date: date!) {
+  static String get getConfigurationDaySelected =>
+      r'''query MyQuery($date: date!) {
   app_configuration_day_scheduler(where: {date_scheduler: {_eq: $date}}) {
     date_scheduler
     id
@@ -98,14 +98,14 @@ mutation MyMutation($id_config: Int!,$qtd_of_scheduler: Int!) {
   }
 }''';
 
-  static String get deleteConfigPerId =>r'''
+  static String get deleteConfigPerId => r'''
 mutation MyMutation($id: Int!) {
   delete_app_configuration_day_scheduler(where: {id: {_eq: $id}}) {
     affected_rows
   }
 }
 ''';
-  static String get deleteServices=>r'''
+  static String get deleteServices => r'''
  mutation MyMutation($id: Int!) {
   delete_app_services(where: {id: {_eq: $id}}) {
     affected_rows
@@ -113,14 +113,16 @@ mutation MyMutation($id: Int!) {
 }
 ''';
 
-static String get allScheduleSubscription=>r'''subscription schedules {
+  static String get allScheduleSubscription => r'''subscription schedules {
   app_schedules(order_by: {date_schedule: desc}) {
     date_schedule
     id_hour
     name_client
     service_id
     id_user
+    name_service
+    hour
   }
-}''';
-
+}
+''';
 }

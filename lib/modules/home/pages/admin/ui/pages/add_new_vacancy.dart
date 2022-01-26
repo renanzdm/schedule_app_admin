@@ -20,6 +20,7 @@ class AddNewVacancy extends StatefulWidget {
 class _AddNewVacancyState extends State<AddNewVacancy> {
   final _adminController = Get.find<AdminController>();
 
+
   @override
   Widget build(BuildContext context) {
     var sizes = MediaQuery.of(context).size;
@@ -54,7 +55,7 @@ class _AddNewVacancyState extends State<AddNewVacancy> {
                   onTap: (CalendarTapDetails details) async {
                     _adminController.setDateSchedule(
                         date: details.date ?? DateTime.now());
-                  await _adminController.getConfigs();
+                    await _adminController.getConfigs();
                   },
                 ),
                 const SizedBox(
@@ -70,7 +71,6 @@ class _AddNewVacancyState extends State<AddNewVacancy> {
                   ),
                   onPressed: () async {
                     await _adminController.addNewVacancy();
-                    
                   },
                   child: const Text(
                     'Adicionar Novas Vagas',
@@ -88,5 +88,3 @@ class _AddNewVacancyState extends State<AddNewVacancy> {
     );
   }
 }
-
-

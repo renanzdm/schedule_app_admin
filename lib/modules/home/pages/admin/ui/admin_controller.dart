@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,6 +52,7 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
 
   @override
   void onReady() async {
+    await getConfigs();
     listOfTimesDefault.assignAll(_homeController.listOfTimesDefault);
     listOfServices.assignAll(_homeController.listOfServices);
     selectedItemDropDownButton.value = listOfTimesDefault.first;
@@ -65,7 +65,7 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
   }
 
   Future<void> getConfigs() async {
-    await _homeController.getConfigurationDayScheduler(showLoading: false);
+    await _homeController.getConfigurationDayScheduler(showLoading: true);
     listDatesOfConfig.assignAll(_homeController.listOfConfigurationByDay);
   }
 
@@ -155,7 +155,7 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
     });
   }
 
-    Future<void> getAllSchedulesSibscription() async {
+    Future<void> getAllSchedulesSubscription() async {
        var res = await _adminService.getAllSchedules();
        res.fold((l) {
           _messages(MessageModel.error(

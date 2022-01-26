@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/modules/register/ui/register_module.dart';
@@ -11,7 +12,11 @@ import 'modules/login/ui/login_module.dart';
 import 'modules/splash/splash_module.dart';
 
 
-main() async {
+main(){
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.dark
+  ));
+
   runApp(const MyApp());
 }
 

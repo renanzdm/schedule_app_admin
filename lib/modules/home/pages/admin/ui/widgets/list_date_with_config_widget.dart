@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,7 +37,6 @@ class ListDateWithConfigWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       onLongPress: () async {
                         await _adminController.deleteConfig(id: element.idConfig);
-                        await _adminController.getConfigs();
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

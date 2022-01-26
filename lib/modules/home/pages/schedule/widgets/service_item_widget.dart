@@ -18,7 +18,7 @@ class ServiceItemWidget extends StatelessWidget {
       required this.description,
       required this.id})
       : super(key: key);
-  final _homeControlle = Get.find<HomeController>();
+  final _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ServiceItemWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            boxShadow: _homeControlle.serviceIdSelected.value == id
+            boxShadow: _homeController.serviceIdSelected.value == id
                 ? <BoxShadow>[
                     const BoxShadow(
                       color: Colors.black,
@@ -41,8 +41,8 @@ class ServiceItemWidget extends StatelessWidget {
                     )
                   ]
                 : <BoxShadow>[]),
-        height: _homeControlle.serviceIdSelected.value == id ? 80 : 75,
-        width: _homeControlle.serviceIdSelected.value == id
+        height: _homeController.serviceIdSelected.value == id ? 80 : 75,
+        width: _homeController.serviceIdSelected.value == id
             ? width
             : width - 30,
         child: Material(
@@ -51,13 +51,14 @@ class ServiceItemWidget extends StatelessWidget {
               Radius.circular(16),
             ),
           ),
-          color: _homeControlle.serviceIdSelected.value == id
+          color: _homeController.serviceIdSelected.value == id
               ? context.themeRed
               : Colors.white,
           child: InkWell(
              borderRadius:BorderRadius.circular(12),
             onTap: () async {
-              _homeControlle.setIdServiceSelected(id: id);
+              _homeController.setIdServiceSelected(id: id);
+              _homeController.setNameService(name: name);
           
             },
             child: Row(
@@ -73,7 +74,7 @@ class ServiceItemWidget extends StatelessWidget {
                       Utils.formatForMoney(price: price),
                       style: TextStyle(
                           color:
-                              _homeControlle.serviceIdSelected.value == id
+                              _homeController.serviceIdSelected.value == id
                                   ? Colors.white
                                   : Colors.black,
                           fontWeight: FontWeight.bold,
@@ -94,7 +95,7 @@ class ServiceItemWidget extends StatelessWidget {
                         name,
                         style: TextStyle(
                             color:
-                                _homeControlle.serviceIdSelected.value ==
+                                _homeController.serviceIdSelected.value ==
                                         id
                                     ? Colors.white
                                     : Colors.black,
@@ -107,7 +108,7 @@ class ServiceItemWidget extends StatelessWidget {
                         description,
                         style: TextStyle(
                           color:
-                              _homeControlle.serviceIdSelected.value == id
+                              _homeController.serviceIdSelected.value == id
                                   ? Colors.white
                                   : Colors.black54,
                           fontSize: 12,

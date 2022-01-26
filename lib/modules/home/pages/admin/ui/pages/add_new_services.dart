@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
@@ -80,8 +82,8 @@ class AddNewServices extends StatelessWidget {
                   style: TextStyle(fontSize: 20),
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: Platform.isIOS ? 60 : 20,
               ),
             ],
           ),

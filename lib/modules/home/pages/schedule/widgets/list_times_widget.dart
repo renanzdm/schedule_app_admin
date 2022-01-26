@@ -57,6 +57,7 @@ class ListTimesWidget extends StatelessWidget {
                               ? null
                               : () {
                                   _homeController.setIdHour(id: element.id);
+                                  _homeController.setHour(hour: element.time);
                                 },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

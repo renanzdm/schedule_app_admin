@@ -4,7 +4,11 @@ class SchedulesModel {
   final int serviceId;
   final int idHour;
   final String dateSchedule;
+  final String nameService;
+  final String hour;
   SchedulesModel({
+    this.nameService = '',
+    this.hour = '',
     this.id = -1,
     this.nameClient = '',
     this.serviceId = -1,
@@ -18,6 +22,8 @@ class SchedulesModel {
     int? serviceId,
     int? idHour,
     String? dateSchedule,
+    String? nameService,
+    String? hour,
   }) {
     return SchedulesModel(
       id: id ?? this.id,
@@ -25,6 +31,8 @@ class SchedulesModel {
       serviceId: serviceId ?? this.serviceId,
       idHour: idHour ?? this.idHour,
       dateSchedule: dateSchedule ?? this.dateSchedule,
+      nameService: nameService ??this.nameService,
+      hour:  hour ??this.hour
     );
   }
 
@@ -35,6 +43,8 @@ class SchedulesModel {
       'service_id': serviceId,
       'id_hour': idHour,
       'date_schedule': dateSchedule,
+      'name_service':nameService,
+      'hour':hour
     };
   }
 
@@ -44,12 +54,23 @@ class SchedulesModel {
       nameClient: map['name_client'] ?? '',
       serviceId: map['service_id'] ?? 0,
       idHour: map['id_hour'] ?? 0,
-      dateSchedule: map['date_schedule'] ?? '',
+      dateSchedule: formatDate(map['date_schedule'] ?? ''),
+      nameService: map['name_service'] ?? '',
+      hour: map['hour'] ?? '',
     );
+  }
+
+  static String formatDate(String date) {
+    String value = '';
+    if (date.isNotEmpty) {
+      var listSplit = date.split('-');
+      value += listSplit[2] + '-' + listSplit[1] + '-' + listSplit[0];
+    }
+    return value;
   }
 
   @override
   String toString() {
-    return 'SchedulesModel(id: $id, name_client: $nameClient, serviceId: $serviceId, hourInitId: $idHour, dateSchedule: $dateSchedule)';
+    return 'SchedulesModel(id: $id, nameClient: $nameClient, serviceId: $serviceId, idHour: $idHour, dateSchedule: $dateSchedule, nameService: $nameService, hour: $hour)';
   }
 }
