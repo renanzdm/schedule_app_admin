@@ -106,7 +106,9 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
         idHour: selectedItemDropDownButton.value!.id,
         qtdVacancy: vacancyValue.value);
     _loading(false);
-    res.fold((l) {}, (r) async {
+    res.fold((l) {
+      print(l);
+    }, (r) async {
       await _homeController.getConfigurationDayScheduler();
       listDatesOfConfig.assignAll(_homeController.listOfConfigurationByDay);
     });
