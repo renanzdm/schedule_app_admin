@@ -167,4 +167,23 @@ class AdminRepositoryImpl implements AdminRepository {
       return left(ForeignKeyConflict());
     }
   }
+
+  @override
+  Future<ResultDeleteSchedule> deleteSchedule({required int id}) async {
+   try {
+      var response = await _hasuraConnect.getConnect
+          .mutation(ScheduleQueries.deleteSchedule, variables: {
+        'id': id,
+      });
+      log(response.toString());
+      if (response['data']['delete_app_schedules']['affected_rows'] != 0) {
+        return right(true);
+      } else {
+        return left(UnknownError());
+      }
+    } catch (e) {
+      log(e.toString());
+      return left(UnknownError());
+    }
+  }
 }

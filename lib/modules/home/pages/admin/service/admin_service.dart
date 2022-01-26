@@ -11,6 +11,8 @@ abstract class AdminService{
       {required String name, required String description, required int price});
   Future<ResultDeleteConfig> deleteServiceById({required int id});
     Future<ResultAllSchedules> getAllSchedules();
+    Future<ResultDeleteSchedule> deleteSchedule({required int id});
+
 
 
 

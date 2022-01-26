@@ -6,7 +6,7 @@ import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
 
 class ErrorLoadedWidget extends StatelessWidget {
   final String error;
-  final dynamic Function()? reloadFunction;
+  final  Function()? reloadFunction;
   const ErrorLoadedWidget({Key? key, required this.error, this.reloadFunction})
       : super(key: key);
 
@@ -26,10 +26,8 @@ class ErrorLoadedWidget extends StatelessWidget {
             error,
             style: const TextStyle(color: Colors.white,fontSize: 20),
           ),
-          IconButton(
-              onPressed: () async {
-                await reloadFunction?.call();
-              },
+        if(reloadFunction!= null)  IconButton(
+              onPressed:reloadFunction,
               icon: const Icon(
                 Icons.restart_alt,
                 color: Colors.white,

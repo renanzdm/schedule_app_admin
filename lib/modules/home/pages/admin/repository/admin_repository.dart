@@ -10,6 +10,7 @@ typedef ResultDatesWithConfig = Either<AdminErrors, List<DateWithConfigModel>>;
 typedef ResultDeleteConfig = Either<AdminErrors, bool>;
 typedef ResultInsertNewServices = Either<AdminErrors, bool>;
 typedef ResultAllSchedules = Either<AdminErrors, Snapshot>;
+typedef ResultDeleteSchedule = Either<AdminErrors, bool>;
 
 abstract class AdminRepository {
   Future<ResultInsertNewTimes> insertNewTimes({required String time});
@@ -28,5 +29,8 @@ abstract class AdminRepository {
   Future<ResultDeleteConfig> deleteServiceById({required int id});
  
   Future<ResultAllSchedules> getAllSchedules();
+
+  Future<ResultDeleteSchedule> deleteSchedule({required int id});
+
 
 }

@@ -36,6 +36,7 @@ class _AddNewVacancyState extends State<AddNewVacancy> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
                   height: 30,
@@ -60,6 +61,16 @@ class _AddNewVacancyState extends State<AddNewVacancy> {
                 ),
                 const SizedBox(
                   height: 50,
+                ),
+                 const Text(
+                  'Configurações neste dia',
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                 const SizedBox(
+                  height: 20,
                 ),
                 ListDateWithConfigWidget(),
                 DropDownButtonWidget(),

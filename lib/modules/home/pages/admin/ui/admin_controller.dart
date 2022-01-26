@@ -22,7 +22,6 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
       : _homeController = homeController,
         _adminService = adminService;
 
-
   final _loading = Rx<bool>(false);
   final _messages = Rxn<MessageModel>();
   RxList<TimesModel> listOfTimesDefault = RxList<TimesModel>([]);
@@ -34,7 +33,7 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
   DateTime dateSelectedSchedule = DateTime.now();
   Rxn<TimesModel> selectedItemDropDownButton = Rxn(null);
   Rx<int> vacancyValue = Rx<int>(0);
-  RxList<SchedulesModel> listOfSchedule =  RxList<SchedulesModel>([]);
+  RxList<SchedulesModel> listOfSchedule = RxList<SchedulesModel>([]);
   StreamSubscription? allSchedulesSubscription;
   Snapshot? allSchedulesSnapshot;
 
@@ -155,23 +154,33 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
     });
   }
 
-    Future<void> getAllSchedulesSubscription() async {
-       var res = await _adminService.getAllSchedules();
-       res.fold((l) {
-          _messages(MessageModel.error(
+  Future<void> getAllSchedulesSubscription() async {
+    var res = await _adminService.getAllSchedules();
+    res.fold((l) {
+      _messages(MessageModel.error(
           title: 'Error ao excluir Servico', message: 'Error'));
-       }, (r) {
-         allSchedulesSnapshot=r;
-          allSchedulesSubscription =  r.listen((event) { 
-              listOfSchedule.clear();
-            listOfSchedule.addAll((event?['data']?['app_schedules']??[]).map<SchedulesModel>((e)=>SchedulesModel.fromMap(e)).toList());
-            });
-       });
-    }
+    }, (r) {
+      allSchedulesSnapshot = r;
+      allSchedulesSubscription = r.listen((event) {
+        listOfSchedule.clear();
+        listOfSchedule.addAll((event?['data']?['app_schedules'] ?? [])
+            .map<SchedulesModel>((e) => SchedulesModel.fromMap(e))
+            .toList());
+      });
+    });
+  }
 
-void disposer(){
-  allSchedulesSnapshot?.close();
-  allSchedulesSubscription?.cancel();
-}
+  Future<void> deleteSchedule(int id) async {
+    _loading(true);
+    var res = await _adminService.deleteSchedule(id: id);
+    _loading(false);
+    res.fold((l) => print(l), (r) {
+      print(r);
+    });
+  }
 
+  void disposer() {
+    allSchedulesSnapshot?.close();
+    allSchedulesSubscription?.cancel();
+  }
 }

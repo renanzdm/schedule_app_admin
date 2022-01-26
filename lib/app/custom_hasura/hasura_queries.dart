@@ -116,12 +116,21 @@ mutation MyMutation($id: Int!) {
   static String get allScheduleSubscription => r'''subscription schedules {
   app_schedules(order_by: {date_schedule: desc}) {
     date_schedule
+    id
     id_hour
     name_client
     service_id
     id_user
     name_service
     hour
+  }
+}
+''';
+
+static String get deleteSchedule=>r'''
+mutation MyMutation($id: Int!) {
+  delete_app_schedules(where: {id: {_eq: $id}}) {
+    affected_rows
   }
 }
 ''';

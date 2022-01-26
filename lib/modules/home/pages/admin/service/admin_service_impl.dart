@@ -45,4 +45,7 @@ class AdminServiceImpl implements AdminService {
 
   @override
   Future<ResultAllSchedules> getAllSchedules() async => await _adminRepositoryImpl.getAllSchedules();
+
+  @override
+  Future<ResultDeleteSchedule> deleteSchedule({required int id}) async => await _adminRepositoryImpl.deleteSchedule(id: id);
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:schedule_app_admin/app/ui/handler_messages/dialog_message.dart';
+import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/padding_default.dart';
+import 'package:schedule_app_admin/app/ui/widgets/error_loaded_widget.dart';
 import 'package:schedule_app_admin/modules/home/models/schedules_model.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/admin_controller.dart';
 
@@ -36,13 +39,19 @@ class _AllSchedulesState extends State<AllSchedules> {
         child: Padding(
             padding: PaddingDefault.screenPaddingHorizontal,
             child: Obx(() {
-              return ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                itemCount: _adminController.listOfSchedule.length,
-                itemBuilder: (context, index) {
-                  var item = _adminController.listOfSchedule[index];
-                  return ScheduleWidget(item: item);
-                },
+              return Visibility(
+                visible: _adminController.listOfSchedule.isNotEmpty,
+                replacement: const Center(
+                  child: ErrorLoadedWidget(error: 'Ainda não há agendamentos',),
+                ),
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  itemCount: _adminController.listOfSchedule.length,
+                  itemBuilder: (context, index) {
+                    var item = _adminController.listOfSchedule[index];
+                    return ScheduleWidget(item: item);
+                  },
+                ),
               );
             })),
       ),
@@ -51,15 +60,17 @@ class _AllSchedulesState extends State<AllSchedules> {
 }
 
 class ScheduleWidget extends StatelessWidget {
-  const ScheduleWidget({
+  ScheduleWidget({
     Key? key,
     required this.item,
   }) : super(key: key);
 
   final SchedulesModel item;
+  final _adminController = Get.find<AdminController>();
 
   @override
   Widget build(BuildContext context) {
+    var sizes = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 6.0, bottom: 6.0),
       width: MediaQuery.of(context).size.width,
@@ -78,25 +89,13 @@ class ScheduleWidget extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
-          onLongPress: () {
-            showDialog(
+          onLongPress: () async {
+            await DialogAlertAction.showDialogWidget(
                 context: context,
-                builder: (context) {
-                  return Material(
-                    color: Colors.transparent,
-                    child: Container(
-                      height: 100,
-                      width: 200,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(onPressed: (){}, icon: Icon(Icons.ac_unit_outlined)),
-                          IconButton(onPressed: (){}, icon: Icon(Icons.ac_unit_outlined))
-                        ],
-                      ),
-                  
-                    ),
-                  );
+                titleDialog: 'Deseja apagar Agendamento?',
+                confirmFunction: () async {
+                  await _adminController.deleteSchedule(item.id);
+                  Navigator.pop(context);
                 });
           },
           child: Column(

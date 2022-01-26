@@ -115,6 +115,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
     res.fold((l) {
       errorGetServices.value = l.error;
     }, (res) {
+      errorGetServices.value='';
       listOfServices.addAll(res);
     });
    if(showLoading)_loading(false);
@@ -127,6 +128,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
     res.fold((l) {
       errorGetTimes.value = l.error;
     }, (res) {
+         errorGetTimes.value='';
       listOfTimesDefault.addAll(res);
     });
     if(showLoading)_loading(false);
@@ -141,6 +143,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
     res.fold((l) {
       errorGetSchedules.value = l.error;
     }, (res) {
+       errorGetSchedules.value='';
       listOfSchedules.addAll(res);
     });
   if(showLoading)_loading(false);
