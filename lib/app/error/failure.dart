@@ -10,7 +10,7 @@ abstract class Failure {
   });
 }
 class UnknownError extends Failure {
-  UnknownError({Object? error, StackTrace? stackTrace})
+  UnknownError({Object? error, StackTrace? stackTrace,String message='Aconteceu um erro no servidor, estaremos investigando'})
       : super(error: error, stackTrace: stackTrace) {
     if (stackTrace != null&&!kDebugMode) {
       ExternalErrorService.createErrorReport(

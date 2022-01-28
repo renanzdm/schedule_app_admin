@@ -26,10 +26,10 @@ class AdminRepositoryImpl implements AdminRepository {
       if (response['data']['insert_app_times']['affected_rows'] != 0) {
         return right(true);
       } else {
-        return left(UnknownError());
+        return left(ErrorInsertNewTimes());
       }
     } catch (e, s) {
-      return left(UnknownError(error:e, stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -43,13 +43,12 @@ class AdminRepositoryImpl implements AdminRepository {
       if (response['data']['delete_app_times']['affected_rows'] != 0) {
         return right(true);
       } else {
-        return left(UnknownError());
+        return left(ErrorOnDeleteTime());
       }
-    } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s));
-    } catch (e) {
+    } on HasuraError catch (e) {
       return left(ForeignKeyConflict());
+    } catch (e, s) {
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -66,7 +65,8 @@ class AdminRepositoryImpl implements AdminRepository {
           (responseForQtdVacancy['data']['app_schedules'] as List).length;
       if (qtdSchedulesOfHourDate > qtdVacancy) {
         return left(UnknownError(
-            error: 'Erro ao tentar editar essa configuração',));
+          error: 'Erro ao tentar editar essa configuração',
+        ));
       } else {
         var response = await _hasuraConnect.getConnect.query(
             ScheduleQueries.getConfigsPerDateAndHour,
@@ -105,8 +105,7 @@ class AdminRepositoryImpl implements AdminRepository {
         }
       }
     } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s));
+      return left(UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
       return left(UnknownError(error: e.toString(), stackTrace: s));
     }
@@ -127,8 +126,7 @@ class AdminRepositoryImpl implements AdminRepository {
         return left(UnknownError());
       }
     } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s));
+      return left(UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
       return left(UnknownError(error: e.toString(), stackTrace: s));
     }
@@ -152,8 +150,7 @@ class AdminRepositoryImpl implements AdminRepository {
         return left(UnknownError());
       }
     } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s));
+      return left(UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
       return left(UnknownError(error: e.toString(), stackTrace: s));
     }
@@ -172,8 +169,7 @@ class AdminRepositoryImpl implements AdminRepository {
         return left(UnknownError());
       }
     } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s));
+      return left(UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
       return left(UnknownError(error: e.toString(), stackTrace: s));
     }
@@ -186,8 +182,7 @@ class AdminRepositoryImpl implements AdminRepository {
           .subscription(ScheduleQueries.allScheduleSubscription);
       return right(snapshot);
     } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s));
+      return left(UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
       return left(UnknownError(error: e.toString(), stackTrace: s));
     }
@@ -207,8 +202,10 @@ class AdminRepositoryImpl implements AdminRepository {
         return left(UnknownError());
       }
     } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s,));
+      return left(UnknownError(
+        error: e.message,
+        stackTrace: s,
+      ));
     } catch (e, s) {
       return left(UnknownError(error: e.toString(), stackTrace: s));
     }
