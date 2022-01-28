@@ -1,4 +1,4 @@
-import 'package:schedule_app_admin/modules/home/pages/admin/repository/admin_repository.dart';
+import 'package:schedule_app_admin/modules/home/models/return_types.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/repository/admin_repository_impl.dart';
 
 import 'admin_service.dart';
@@ -25,8 +25,6 @@ class AdminServiceImpl implements AdminService {
       await _adminRepositoryImpl.addNewVacancy(
           date: date, idHour: idHour, qtdVacancy: qtdVacancy);
 
-
-
   @override
   Future<ResultDeleteConfig> deleteConfigById({required int id}) async =>
       await _adminRepositoryImpl.deleteConfigById(id: id);
@@ -41,11 +39,13 @@ class AdminServiceImpl implements AdminService {
 
   @override
   Future<ResultDeleteConfig> deleteServiceById({required int id}) async =>
-    await  _adminRepositoryImpl.deleteServiceById(id: id);
+      await _adminRepositoryImpl.deleteServiceById(id: id);
 
   @override
-  Future<ResultAllSchedules> getAllSchedules() async => await _adminRepositoryImpl.getAllSchedules();
+  Future<ResultAllSchedules> getAllSchedules() async =>
+      await _adminRepositoryImpl.getAllSchedules();
 
   @override
-  Future<ResultDeleteSchedule> deleteSchedule({required int id}) async => await _adminRepositoryImpl.deleteSchedule(id: id);
+  Future<ResultDeleteSchedule> deleteSchedule({required int id}) async =>
+      await _adminRepositoryImpl.deleteSchedule(id: id);
 }

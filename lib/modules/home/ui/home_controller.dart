@@ -113,7 +113,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
     listOfServices.clear();
     var res = await _homeService.getServices();
     res.fold((l) {
-      errorGetServices.value = l.error;
+      errorGetServices.value = l.error.toString();
     }, (res) {
       errorGetServices.value='';
       listOfServices.addAll(res);
@@ -126,7 +126,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
     listOfTimesDefault.clear();
     var res = await _homeService.getTimes();
     res.fold((l) {
-      errorGetTimes.value = l.error;
+      errorGetTimes.value = l.error.toString();
     }, (res) {
          errorGetTimes.value='';
       listOfTimesDefault.addAll(res);
@@ -141,7 +141,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
         date:
             '${dateSelectedSchedule.year}-${dateSelectedSchedule.month}-${dateSelectedSchedule.day}');
     res.fold((l) {
-      errorGetSchedules.value = l.error;
+      errorGetSchedules.value = l.error.toString();
     }, (res) {
        errorGetSchedules.value='';
       listOfSchedules.addAll(res);
@@ -189,7 +189,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
     }
   }
 
-  void configuresTimesForConfig() async {
+  void configuresTimesForConfig()  {
     for (var config in listOfConfigurationByDay) {
       for (var time in listOfTimes) {
         if (time.id == config.idHour) {
@@ -199,7 +199,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
     }
   }
 
-  void setTheHoursIsBusy() async {
+  void setTheHoursIsBusy()  {
     for (var schedule in listOfSchedules) {
       for (var time in listOfTimes) {
         if (time.id == schedule.idHour) {

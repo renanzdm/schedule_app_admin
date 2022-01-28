@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/modules/register/ui/register_module.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import 'app/app_binding/app_bindings.dart';
@@ -11,14 +12,20 @@ import 'modules/home/ui/home_module.dart';
 import 'modules/login/ui/login_module.dart';
 import 'modules/splash/splash_module.dart';
 
-
-main(){
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarBrightness: Brightness.dark
-  ));
-
-  runApp(const MyApp());
+Future<void> main() async {
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://7f145e28a3cb4f9fa44ff279a0c22cb3@o1128671.ingest.sentry.io/6171617';
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(const MyApp()),
+  );
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark));
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -31,10 +38,13 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
         SfGlobalLocalizations.delegate
       ],
-      supportedLocales:const [
+      supportedLocales: const [
         Locale('en'),
         Locale('es'),
         Locale('pt'),
+      ],
+      navigatorObservers: [
+        SentryNavigatorObserver(),
       ],
       locale: const Locale('pt'),
       theme: ManagerUiTheme.theme(context),

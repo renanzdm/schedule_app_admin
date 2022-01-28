@@ -10,10 +10,9 @@ class CustomHasuraConnect {
 
   HasuraConnect get getConnect {
     return HasuraConnect(
-      'https://schedules-app-db.herokuapp.com/v1/graphql',
+     const String.fromEnvironment('HASURAURL'),
       headers: {
-        "content-type": _contentType,
-        
+        "content-type": _contentType, 
       },
       interceptors: [
         HasuraTokenInterceptor(),

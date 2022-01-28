@@ -18,43 +18,30 @@ mixin MessageMixin on GetxController {
                   const SizedBox(
                     width: 10,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        model.title,
-                        style: TextStyle(
-                            color: model.titleColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                      Text(
-                        model.message,
-                        style: TextStyle(color: model.messageColor),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          model.title,
+                          style: TextStyle(
+                              color: model.titleColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        Text(
+                          model.message,
+                          style: TextStyle(color: model.messageColor),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           );
-
-          //  Get.rawSnackbar(
-          //       animationDuration: const Duration(milliseconds: 1000),
-          //       messageText: Text(
-          //         model.message,
-          //         style: TextStyle(color: model.messageColor),
-          //       ),
-          //       titleText: Text(
-          //         model.title,
-          //         style: TextStyle(
-          //             color: model.titleColor,
-          //             fontWeight: FontWeight.bold,
-          //             fontSize: 18),
-          //       ),
-          //       icon: Icon(model.icon, color: Colors.white, size: 40),
-          //       backgroundColor: model.type.color());
         }
       },
     );

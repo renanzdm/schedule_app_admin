@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/ui/handler_messages/dialog_message.dart';
-import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/padding_default.dart';
 import 'package:schedule_app_admin/app/ui/widgets/error_loaded_widget.dart';
 import 'package:schedule_app_admin/modules/home/models/schedules_model.dart';
@@ -16,6 +15,7 @@ class AllSchedules extends StatefulWidget {
 
 class _AllSchedulesState extends State<AllSchedules> {
   final _adminController = Get.find<AdminController>();
+
   @override
   void initState() {
     _adminController.getAllSchedulesSubscription();
@@ -25,7 +25,6 @@ class _AllSchedulesState extends State<AllSchedules> {
   @override
   void dispose() {
     _adminController.disposer();
-
     super.dispose();
   }
 
@@ -37,12 +36,15 @@ class _AllSchedulesState extends State<AllSchedules> {
       ),
       body: SizedBox(
         child: Padding(
-            padding: PaddingDefault.screenPaddingHorizontal,
-            child: Obx(() {
+          padding: PaddingDefault.screenPaddingHorizontal,
+          child: Obx(
+            () {
               return Visibility(
                 visible: _adminController.listOfSchedule.isNotEmpty,
                 replacement: const Center(
-                  child: ErrorLoadedWidget(error: 'Ainda não há agendamentos',),
+                  child: ErrorLoadedWidget(
+                    error: 'Ainda não há agendamentos',
+                  ),
                 ),
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -53,7 +55,9 @@ class _AllSchedulesState extends State<AllSchedules> {
                   },
                 ),
               );
-            })),
+            },
+          ),
+        ),
       ),
     );
   }

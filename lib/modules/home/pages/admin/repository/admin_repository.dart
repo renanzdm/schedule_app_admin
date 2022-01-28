@@ -1,16 +1,6 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:hasura_connect/hasura_connect.dart';
-import 'package:schedule_app_admin/modules/home/errors/admin_errors.dart';
-import 'package:schedule_app_admin/modules/home/models/dates_with_config_model.dart';
+import 'package:schedule_app_admin/modules/home/models/return_types.dart';
 
-typedef ResultInsertNewTimes = Either<AdminErrors, bool>;
-typedef ResultDeleteTimes = Either<AdminErrors, bool>;
-typedef ResultAddNewVacancy = Either<AdminErrors, bool>;
-typedef ResultDatesWithConfig = Either<AdminErrors, List<DateWithConfigModel>>;
-typedef ResultDeleteConfig = Either<AdminErrors, bool>;
-typedef ResultInsertNewServices = Either<AdminErrors, bool>;
-typedef ResultAllSchedules = Either<AdminErrors, Snapshot>;
-typedef ResultDeleteSchedule = Either<AdminErrors, bool>;
+
 
 abstract class AdminRepository {
   Future<ResultInsertNewTimes> insertNewTimes({required String time});

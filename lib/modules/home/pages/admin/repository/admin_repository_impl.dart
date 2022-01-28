@@ -2,12 +2,11 @@ import 'dart:developer';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:hasura_connect/hasura_connect.dart';
-import 'package:schedule_app_admin/app/client_http/client_http.dart';
 import 'package:schedule_app_admin/app/custom_hasura/custom_hasura.dart';
 import 'package:schedule_app_admin/app/custom_hasura/hasura_queries.dart';
+import 'package:schedule_app_admin/app/error/failure.dart';
 import 'package:schedule_app_admin/modules/home/errors/admin_errors.dart';
-import 'package:schedule_app_admin/modules/home/models/dates_with_config_model.dart';
-import 'package:schedule_app_admin/modules/home/models/services_model.dart';
+import 'package:schedule_app_admin/modules/home/models/return_types.dart';
 
 import 'admin_repository.dart';
 
@@ -29,8 +28,8 @@ class AdminRepositoryImpl implements AdminRepository {
       } else {
         return left(UnknownError());
       }
-    } catch (e) {
-      return left(UnknownError());
+    } catch (e, s) {
+      return left(UnknownError(error:e, stackTrace: s));
     }
   }
 
@@ -46,6 +45,9 @@ class AdminRepositoryImpl implements AdminRepository {
       } else {
         return left(UnknownError());
       }
+    } on HasuraError catch (e, s) {
+      return left(
+          UnknownError(error: e.message, stackTrace: s));
     } catch (e) {
       return left(ForeignKeyConflict());
     }
@@ -57,44 +59,56 @@ class AdminRepositoryImpl implements AdminRepository {
       required int idHour,
       required int qtdVacancy}) async {
     try {
-      var response = await _hasuraConnect.getConnect.query(
-          ScheduleQueries.getConfigsPerDateAndHour,
+      var responseForQtdVacancy = await _hasuraConnect.getConnect.query(
+          ScheduleQueries.checkIfAddNewVacancy,
           variables: {'date': date, 'id_hour': idHour});
-      List listOfConfigsPerDateAndHour =
-          response['data']?['app_configuration_day_scheduler'] ?? [];
-      if (listOfConfigsPerDateAndHour.isEmpty) {
-        //inserir
-        var response = await _hasuraConnect.getConnect
-            .mutation(ScheduleQueries.insertNewQtdSchedules, variables: {
-          'date': date,
-          'id_hour': idHour,
-          'qtd_of_scheduler': qtdVacancy
-        });
-        if (response['data']['insert_app_configuration_day_scheduler']
-                ['affected_rows'] !=
-            0) {
-          return right(true);
-        } else {
-          return left(UnknownError());
-        }
+      var qtdSchedulesOfHourDate =
+          (responseForQtdVacancy['data']['app_schedules'] as List).length;
+      if (qtdSchedulesOfHourDate > qtdVacancy) {
+        return left(UnknownError(
+            error: 'Erro ao tentar editar essa configuração',));
       } else {
-        //fazer update
-        var response = await _hasuraConnect.getConnect
-            .mutation(ScheduleQueries.updateQtdConfigDay, variables: {
-          'id_config': listOfConfigsPerDateAndHour.first['id'],
-          'qtd_of_scheduler': qtdVacancy
-        });
-        if (response['data']['update_app_configuration_day_scheduler']
-                ['affected_rows'] !=
-            0) {
-          return right(true);
+        var response = await _hasuraConnect.getConnect.query(
+            ScheduleQueries.getConfigsPerDateAndHour,
+            variables: {'date': date, 'id_hour': idHour});
+        List listOfConfigsPerDateAndHour =
+            response['data']?['app_configuration_day_scheduler'] ?? [];
+        if (listOfConfigsPerDateAndHour.isEmpty) {
+          //inserir
+          var response = await _hasuraConnect.getConnect
+              .mutation(ScheduleQueries.insertNewQtdSchedules, variables: {
+            'date': date,
+            'id_hour': idHour,
+            'qtd_of_scheduler': qtdVacancy
+          });
+          if (response['data']['insert_app_configuration_day_scheduler']
+                  ['affected_rows'] !=
+              0) {
+            return right(true);
+          } else {
+            return left(UnknownError());
+          }
         } else {
-          return left(UnknownError());
+          //fazer update
+          var response = await _hasuraConnect.getConnect
+              .mutation(ScheduleQueries.updateQtdConfigDay, variables: {
+            'id_config': listOfConfigsPerDateAndHour.first['id'],
+            'qtd_of_scheduler': qtdVacancy
+          });
+          if (response['data']['update_app_configuration_day_scheduler']
+                  ['affected_rows'] !=
+              0) {
+            return right(true);
+          } else {
+            return left(UnknownError());
+          }
         }
       }
-    } catch (e) {
-      log(e.toString());
-      return left(ForeignKeyConflict());
+    } on HasuraError catch (e, s) {
+      return left(
+          UnknownError(error: e.message, stackTrace: s));
+    } catch (e, s) {
+      return left(UnknownError(error: e.toString(), stackTrace: s));
     }
   }
 
@@ -112,8 +126,11 @@ class AdminRepositoryImpl implements AdminRepository {
       } else {
         return left(UnknownError());
       }
-    } catch (e) {
-      return left(ForeignKeyConflict());
+    } on HasuraError catch (e, s) {
+      return left(
+          UnknownError(error: e.message, stackTrace: s));
+    } catch (e, s) {
+      return left(UnknownError(error: e.toString(), stackTrace: s));
     }
   }
 
@@ -134,8 +151,11 @@ class AdminRepositoryImpl implements AdminRepository {
       } else {
         return left(UnknownError());
       }
-    } catch (e) {
-      return left(UnknownError());
+    } on HasuraError catch (e, s) {
+      return left(
+          UnknownError(error: e.message, stackTrace: s));
+    } catch (e, s) {
+      return left(UnknownError(error: e.toString(), stackTrace: s));
     }
   }
 
@@ -151,8 +171,11 @@ class AdminRepositoryImpl implements AdminRepository {
       } else {
         return left(UnknownError());
       }
-    } catch (e) {
-      return left(ForeignKeyConflict());
+    } on HasuraError catch (e, s) {
+      return left(
+          UnknownError(error: e.message, stackTrace: s));
+    } catch (e, s) {
+      return left(UnknownError(error: e.toString(), stackTrace: s));
     }
   }
 
@@ -162,15 +185,17 @@ class AdminRepositoryImpl implements AdminRepository {
       Snapshot snapshot = await _hasuraConnect.getConnect
           .subscription(ScheduleQueries.allScheduleSubscription);
       return right(snapshot);
-
-    } catch (e) {
-      return left(ForeignKeyConflict());
+    } on HasuraError catch (e, s) {
+      return left(
+          UnknownError(error: e.message, stackTrace: s));
+    } catch (e, s) {
+      return left(UnknownError(error: e.toString(), stackTrace: s));
     }
   }
 
   @override
   Future<ResultDeleteSchedule> deleteSchedule({required int id}) async {
-   try {
+    try {
       var response = await _hasuraConnect.getConnect
           .mutation(ScheduleQueries.deleteSchedule, variables: {
         'id': id,
@@ -181,9 +206,11 @@ class AdminRepositoryImpl implements AdminRepository {
       } else {
         return left(UnknownError());
       }
-    } catch (e) {
-      log(e.toString());
-      return left(UnknownError());
+    } on HasuraError catch (e, s) {
+      return left(
+          UnknownError(error: e.message, stackTrace: s,));
+    } catch (e, s) {
+      return left(UnknownError(error: e.toString(), stackTrace: s));
     }
   }
 }

@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/models/user_model.dart';
+import 'package:schedule_app_admin/app/service/external_error_service.dart';
 import 'package:schedule_app_admin/app/service/shared_preferences_service.dart';
 
 class TokenInterceptor extends InterceptorsWrapper {
@@ -23,9 +25,10 @@ class TokenInterceptor extends InterceptorsWrapper {
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     int? errorCode = err.response?.statusCode;
+  
     if (errorCode == 403) {
       await _sharedPreferences.clearPreferences();
-     _alertError();
+      _alertError();
       await 3.delay();
       Get.offAllNamed('/login');
     } else {
@@ -33,8 +36,7 @@ class TokenInterceptor extends InterceptorsWrapper {
     }
   }
 
-
-  _alertError()  {
+  _alertError() {
     Get.dialog(
         Material(
             color: Colors.transparent,
@@ -75,6 +77,4 @@ class TokenInterceptor extends InterceptorsWrapper {
             )),
         barrierDismissible: false);
   }
-
-
 }

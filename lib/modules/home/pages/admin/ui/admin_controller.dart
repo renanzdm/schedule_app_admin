@@ -106,7 +106,9 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
         qtdVacancy: vacancyValue.value);
     _loading(false);
     res.fold((l) {
-      print(l);
+      _messages(
+        MessageModel.error(title: l.error.toString(), message: '')
+      );
     }, (r) async {
       await _homeController.getConfigurationDayScheduler();
       listDatesOfConfig.assignAll(_homeController.listOfConfigurationByDay);

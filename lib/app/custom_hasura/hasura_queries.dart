@@ -134,4 +134,13 @@ mutation MyMutation($id: Int!) {
   }
 }
 ''';
+
+static String get checkIfAddNewVacancy=>r'''
+query MyQuery($id_hour: Int!,$date: date) {
+  app_schedules(where: {id_hour: {_eq: $id_hour}, _and: {date_schedule: {_eq: $date}}}) {
+    id
+  }
+}
+''';
+
 }

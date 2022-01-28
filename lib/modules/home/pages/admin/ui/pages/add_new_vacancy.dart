@@ -62,13 +62,21 @@ class _AddNewVacancyState extends State<AddNewVacancy> {
                 const SizedBox(
                   height: 50,
                 ),
-                 const Text(
-                  'Configurações neste dia',
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
+                 Obx(
+                   () {
+                     return Visibility(
+                       visible: _adminController.listDatesOfConfig.isNotEmpty,
+                       replacement: const SizedBox(),
+                       child: const Text(
+                        'Configurações neste dia',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                                     ),
+                     );
+                   }
+                 ),
                  const SizedBox(
                   height: 20,
                 ),

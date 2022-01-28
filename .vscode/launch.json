@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "schedule_app_admin",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "schedule_app_admin (debug mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--dart-define=SENTRYURL=https://7f145e28a3cb4f9fa44ff279a0c22cb3@o1128671.ingest.sentry.io/6171617",
+                "--dart-define=HASURAURL=https://schedules-app-db.herokuapp.com/v1/graphql"
+            ]
+        }
+    ]
+}
