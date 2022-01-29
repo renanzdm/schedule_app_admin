@@ -5,9 +5,7 @@ import 'package:get/get.dart';
 import 'package:schedule_app_admin/modules/register/ui/register_module.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
-
 import 'app/app_binding/app_bindings.dart';
-import 'app/service/external_error_service.dart';
 import 'app/ui/theme_default/manager_ui_theme.dart';
 import 'modules/home/ui/home_module.dart';
 import 'modules/login/ui/login_module.dart';
@@ -22,7 +20,6 @@ Future<void> main() async {
     },
     appRunner: () => runApp(const MyApp()),
   );
-  ExternalErrorService.initIsolateOnErrorListener();
 }
 
 
