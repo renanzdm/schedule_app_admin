@@ -7,6 +7,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import 'app/app_binding/app_bindings.dart';
+import 'app/service/external_error_service.dart';
 import 'app/ui/theme_default/manager_ui_theme.dart';
 import 'modules/home/ui/home_module.dart';
 import 'modules/login/ui/login_module.dart';
@@ -16,13 +17,12 @@ Future<void> main() async {
   await SentryFlutter.init(
     (options) {
       options.dsn =
-          'https://7f145e28a3cb4f9fa44ff279a0c22cb3@o1128671.ingest.sentry.io/6171617';
+          const String.fromEnvironment('SENTRYURL');
       options.tracesSampleRate = 1.0;
     },
     appRunner: () => runApp(const MyApp()),
   );
-  SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark));
+  ExternalErrorService.initIsolateOnErrorListener();
 }
 
 
@@ -31,6 +31,8 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+      SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark));
     return GetMaterialApp(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

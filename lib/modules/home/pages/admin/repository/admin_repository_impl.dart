@@ -64,9 +64,7 @@ class AdminRepositoryImpl implements AdminRepository {
       var qtdSchedulesOfHourDate =
           (responseForQtdVacancy['data']['app_schedules'] as List).length;
       if (qtdSchedulesOfHourDate > qtdVacancy) {
-        return left(UnknownError(
-          error: 'Erro ao tentar editar essa configuração',
-        ));
+        return left(NotIsPossibleEditThisConfig());
       } else {
         var response = await _hasuraConnect.getConnect.query(
             ScheduleQueries.getConfigsPerDateAndHour,
@@ -86,7 +84,7 @@ class AdminRepositoryImpl implements AdminRepository {
               0) {
             return right(true);
           } else {
-            return left(UnknownError());
+            return left(NotIsPossibleInsertNewConfiguration());
           }
         } else {
           //fazer update
@@ -100,14 +98,12 @@ class AdminRepositoryImpl implements AdminRepository {
               0) {
             return right(true);
           } else {
-            return left(UnknownError());
+            return left(NotIsPossibleInsertNewConfiguration());
           }
         }
       }
-    } on HasuraError catch (e, s) {
-      return left(UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -123,12 +119,10 @@ class AdminRepositoryImpl implements AdminRepository {
           0) {
         return right(true);
       } else {
-        return left(UnknownError());
+        return left(NotIsPossibleDeletConfig());
       }
-    } on HasuraError catch (e, s) {
-      return left(UnknownError(error: e.message, stackTrace: s));
-    } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+    }catch (e, s) {
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -147,12 +141,10 @@ class AdminRepositoryImpl implements AdminRepository {
       if (response['data']['insert_app_services']['affected_rows'] != 0) {
         return right(true);
       } else {
-        return left(UnknownError());
+        return left(NotIsPossibleInsertNewService());
       }
-    } on HasuraError catch (e, s) {
-      return left(UnknownError(error: e.message, stackTrace: s));
-    } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+    }  catch (e, s) {
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -166,12 +158,10 @@ class AdminRepositoryImpl implements AdminRepository {
       if (response['data']['delete_app_services']['affected_rows'] != 0) {
         return right(true);
       } else {
-        return left(UnknownError());
+        return left(NotIsPossibleInsertDeleteService());
       }
-    } on HasuraError catch (e, s) {
-      return left(UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -181,10 +171,8 @@ class AdminRepositoryImpl implements AdminRepository {
       Snapshot snapshot = await _hasuraConnect.getConnect
           .subscription(ScheduleQueries.allScheduleSubscription);
       return right(snapshot);
-    } on HasuraError catch (e, s) {
-      return left(UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -195,19 +183,13 @@ class AdminRepositoryImpl implements AdminRepository {
           .mutation(ScheduleQueries.deleteSchedule, variables: {
         'id': id,
       });
-      log(response.toString());
       if (response['data']['delete_app_schedules']['affected_rows'] != 0) {
         return right(true);
       } else {
-        return left(UnknownError());
+        return left(ErrorOnDeleteSchedules());
       }
-    } on HasuraError catch (e, s) {
-      return left(UnknownError(
-        error: e.message,
-        stackTrace: s,
-      ));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 }

@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:get/get.dart';
-import 'package:hasura_connect/hasura_connect.dart';
 import 'package:schedule_app_admin/app/models/user_model.dart';
 import 'package:schedule_app_admin/app/service/shared_preferences_service.dart';
 import 'package:schedule_app_admin/app/ui/handler_messages/handler_messages.dart';
@@ -96,7 +93,7 @@ class HomeController extends GetxController with LoaderMixin, MessageMixin {
       _loading(false);
       res.fold(
             (l) =>
-            _messages(MessageModel.error(title: 'Error', message: l.toString())),
+            _messages(MessageModel.error(title: l.error.toString(), message: l.error.toString())),
             (r) => _messages(
           _messages(MessageModel.info(
               title: 'Sucesso', message: 'Sucesso ao registrar')),

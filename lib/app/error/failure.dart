@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:schedule_app_admin/app/service/external_error_service.dart';
 
 abstract class Failure {
@@ -9,10 +8,14 @@ abstract class Failure {
     this.stackTrace,
   });
 }
+
 class UnknownError extends Failure {
-  UnknownError({Object? error, StackTrace? stackTrace,String message='Aconteceu um erro no servidor, estaremos investigando'})
+  UnknownError(
+      {Object? error,
+      StackTrace? stackTrace,
+      String message = 'Aconteceu um erro no servidor, estaremos investigando'})
       : super(error: error, stackTrace: stackTrace) {
-    if (stackTrace != null&&!kDebugMode) {
+    if (stackTrace != null) {
       ExternalErrorService.createErrorReport(
           error: error ?? Exception('Error'), stackTrace: stackTrace);
     }

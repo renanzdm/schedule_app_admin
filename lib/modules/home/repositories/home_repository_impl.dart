@@ -1,6 +1,4 @@
-
 import 'package:fpdart/fpdart.dart';
-import 'package:hasura_connect/hasura_connect.dart';
 import 'package:schedule_app_admin/app/custom_hasura/custom_hasura.dart';
 import 'package:schedule_app_admin/app/custom_hasura/hasura_queries.dart';
 import 'package:schedule_app_admin/app/error/failure.dart';
@@ -29,13 +27,10 @@ class HomeRepositoryImpl implements HomeRepository {
         return right(
             listServices.map((e) => ServicesModel.fromMap(e)).toList());
       } else {
-        return left(ScheduleListServicesIsEmpty(error: 'Lista está vazia'));
+        return left(ListServicesIsEmpty());
       }
-    } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s,));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -48,13 +43,10 @@ class HomeRepositoryImpl implements HomeRepository {
       if (listTimes.isNotEmpty) {
         return right(listTimes.map((e) => TimesModel.fromMap(e)).toList());
       } else {
-        return left(ScheduleListServicesIsEmpty(error: 'Lista está vazia'));
+        return left(ListTimesIsEmpty());
       }
-    } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s,));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -70,13 +62,10 @@ class HomeRepositoryImpl implements HomeRepository {
             .map<SchedulesModel>((e) => SchedulesModel.fromMap(e))
             .toList());
       } else {
-        return left(ScheduleListServicesIsEmpty(error: 'Lista está vazia'));
+        return left(ScheduleListTimeIsEmpty());
       }
-    } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s,));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -95,13 +84,10 @@ class HomeRepositoryImpl implements HomeRepository {
             .map<DateWithConfigModel>((e) => DateWithConfigModel.fromMap(e))
             .toList());
       } else {
-        return left(ScheduleListServicesIsEmpty(error: 'Lista está vazia'));
+        return left(ListServicesIsEmpty());
       }
-    } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 
@@ -128,14 +114,10 @@ class HomeRepositoryImpl implements HomeRepository {
       if (response['data']['insert_app_schedules']['affected_rows'] >= 1) {
         return right(true);
       } else {
-        return left(SchedulingIsNotPossible(
-            error: 'Não foi possível criar o agendamento'));
+        return left(SchedulingIsNotPossible());
       }
-    } on HasuraError catch (e, s) {
-      return left(
-          UnknownError(error: e.message, stackTrace: s, ));
     } catch (e, s) {
-      return left(UnknownError(error: e.toString(), stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
   }
 }
