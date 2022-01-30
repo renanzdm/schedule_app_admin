@@ -15,7 +15,7 @@
             "type": "dart",
             "flutterMode": "debug",
             "args": [
-                "--dart-define=SENTRYURL=https://7f145e28a3cb4f9fa44ff279a0c22cb3@o1128671.ingest.sentry.io/6171617",
+                "--dart-define=SENTRYURL=https://de51e5ff30b6486ea6db9e367bea1fb7@o1128671.ingest.sentry.io/6174758",
                 "--dart-define=HASURAURL=https://schedules-app-db.herokuapp.com/v1/graphql"
             ]
         }
