@@ -1,21 +1,8 @@
-class LoginErrors implements Exception {
-  final String error;
+import 'package:schedule_app_admin/app/error/failure.dart';
 
-  LoginErrors({required this.error});
-}
-
-class EmailOrPasswordIncorrect extends LoginErrors {
-  EmailOrPasswordIncorrect({required String error}) : super(error: error);
-}
-
-class GoogleSignInError extends LoginErrors{
-  GoogleSignInError({required String error}):super(error: error);
-}
-class FacebookSignInError extends LoginErrors{
-  FacebookSignInError({required String error}):super(error: error);
-}
-
-class UnknownErrorOnLogin extends LoginErrors{
-  UnknownErrorOnLogin({required String error}) : super(error: error);
-
+class EmailOrPasswordIncorrect extends Failure {
+  EmailOrPasswordIncorrect(
+      {String message = 'Seu login esta incorreto',
+      String error = 'Não é possível se logar'})
+      : super(error: error,message: message);
 }

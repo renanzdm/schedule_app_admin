@@ -1,7 +1,7 @@
-import 'dart:developer';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:schedule_app_admin/app/client_http/client_http.dart';
+import 'package:schedule_app_admin/app/error/failure.dart';
 import 'package:schedule_app_admin/app/models/user_model.dart';
 import 'package:schedule_app_admin/modules/login/errors/login_errors.dart';
 import 'login_repository.dart';
@@ -30,7 +30,7 @@ class LoginRepositoryImpl implements LoginRepository {
           return left(EmailOrPasswordIncorrect(error: 'Erro desconhecido'));
       }
     } catch (e, s) {
-      return left(UnknownErrorOnLogin(error: 'Erro desconhecido'));
+      return left(UnknownError(error: e,stackTrace: s));
     }
   }
 }

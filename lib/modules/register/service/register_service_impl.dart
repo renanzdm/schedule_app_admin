@@ -19,7 +19,7 @@ class RegisterServiceImpl implements RegisterService {
     required String name,
     required String phone,
   }) async =>
-      await _registerRepositoryImpl.registerFirebase(
+      await _registerRepositoryImpl.registerUser(
           email: email, password: password,name: name,phone: phone);
 
 

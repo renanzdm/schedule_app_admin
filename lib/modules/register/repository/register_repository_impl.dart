@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:schedule_app_admin/app/client_http/client_http.dart';
-import 'package:schedule_app_admin/app/models/user_model.dart';
+import 'package:schedule_app_admin/app/error/failure.dart';
 import 'package:schedule_app_admin/modules/register/errors/register_errors.dart';
 
 import './register_repository.dart';
@@ -14,7 +14,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
       : _clientHttp = clientHttp;
 
   @override
-  Future<RegisterResultResponse> registerFirebase({
+  Future<RegisterResultResponse> registerUser({
     required String email,
     required String password,
     String? rule = 'admin',
@@ -27,7 +27,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
         'password': password,
         'name': name,
         'rule': rule,
-        'phone':phone
+        'phone': phone
       });
       int? statusCode = response.data['code'];
       switch (statusCode) {
@@ -36,11 +36,10 @@ class RegisterRepositoryImpl implements RegisterRepository {
         case 403:
           return left(RegisterFailed(error: response.data['data']));
         default:
-          return left(RegisterFailed(error: 'Erro desconhecido'));
+         return left(RegisterFailed(error: response.data['data']));
       }
     } catch (e) {
-      log(e.toString());
-      return left(RegisterFailed(error: 'Erro desconhecido'));
+      return left(UnknownError());
     }
   }
 }

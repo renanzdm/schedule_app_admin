@@ -33,7 +33,7 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
     response.fold(
           (err) {
         messages(MessageModel.error(
-            title: 'Erro ao realizar login', message: err.error));
+            title: err.error.toString(), message: err.message??''));
       },
           (user) {
         userModel = user;

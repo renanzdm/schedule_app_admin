@@ -1,9 +1,8 @@
-class RegisterErrors implements Exception {
-  String? error;
-  RegisterErrors({required this.error});
-}
+import 'package:schedule_app_admin/app/error/failure.dart';
 
-class RegisterFailed extends RegisterErrors {
-  RegisterFailed({required String error}) : super(error: error);
+class RegisterFailed extends Failure {
+  RegisterFailed(
+      {String message = 'Não foi possivel se registrar',
+      String error = 'Não é possível Apagar'})
+      : super(error: error);
 }
-
