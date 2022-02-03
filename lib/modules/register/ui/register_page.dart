@@ -33,6 +33,21 @@ class RegisterPage extends GetView<RegisterController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Image.asset(
                   'assets/images/logo.png',
                   fit: BoxFit.contain,
@@ -177,7 +192,7 @@ class RegisterContent extends StatelessWidget {
                           name: _nameController.text,
                           phone: _phoneController.text
                               .replaceAll(RegExp(r'\D'), ''));
-                      if (response ) {
+                      if (response) {
                         await Future.delayed(const Duration(seconds: 3));
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/login', (route) => false);

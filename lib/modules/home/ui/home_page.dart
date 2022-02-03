@@ -5,18 +5,15 @@ import 'package:schedule_app_admin/modules/home/pages/schedule/ui/scheduling_pag
 import 'package:schedule_app_admin/modules/home/widgets/bottom_navigation_bar/bottom_navigation_bar_controller.dart';
 import 'package:schedule_app_admin/modules/home/widgets/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 
-
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
   final _listPages = <Widget>[
-    const SchedulingPage(),
-   // const ProductsPage(),
-   // const ServicesPage(),
-     AdminPage(),
+    const SchedulingPage(key: ValueKey('Agendamento')),
+    AdminPage(
+      key: const ValueKey('Administrador'),
+    ),
   ];
   final bottomNavigationController = Get.find<BottomNavigationBarController>();
-
-
 
   @override
   Widget build(BuildContext context) {

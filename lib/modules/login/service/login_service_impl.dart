@@ -15,4 +15,7 @@ class LoginServiceImpl implements LoginService {
           {required String email, required String password}) async =>
       await _loginRepository.login(email: email, password: password);
 
+  @override
+  Future<ResultLogoof> deleteAccount() async=>await _loginRepository.deleteAccount();
+
 }

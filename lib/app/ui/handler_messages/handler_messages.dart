@@ -28,7 +28,7 @@ mixin MessageMixin on GetxController {
                           style: TextStyle(
                               color: model.titleColor,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18),
+                              fontSize: 18, overflow: TextOverflow.ellipsis),
                         ),
                         Text(
                           model.message,

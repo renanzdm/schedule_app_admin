@@ -8,8 +8,11 @@ import 'package:schedule_app_admin/app/ui/theme_default/colors_theme.dart';
 import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../../../../../app/ui/widgets/app_bar_custom_widget.dart';
+
 class SchedulingPage extends StatefulWidget {
-  const SchedulingPage({Key? key}) : super(key: key);
+  const SchedulingPage({required Key key}) : super(key: key);
+ 
 
   @override
   State<SchedulingPage> createState() => _SchedulingPageState();
@@ -22,6 +25,7 @@ class _SchedulingPageState extends State<SchedulingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: const AppBarCustomWidget(title: 'Agendamento',),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,

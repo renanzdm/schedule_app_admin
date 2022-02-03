@@ -1,4 +1,3 @@
-
 import 'package:fpdart/fpdart.dart';
 import 'package:schedule_app_admin/app/client_http/client_http.dart';
 import 'package:schedule_app_admin/app/error/failure.dart';
@@ -30,7 +29,27 @@ class LoginRepositoryImpl implements LoginRepository {
           return left(EmailOrPasswordIncorrect(error: 'Erro desconhecido'));
       }
     } catch (e, s) {
-      return left(UnknownError(error: e,stackTrace: s));
+      return left(UnknownError(error: e, stackTrace: s));
     }
+  }
+
+  @override
+  Future<ResultLogoof> deleteAccount() async {
+    try {
+      var response = await _clientHttp
+          .post('/auth/logout');
+      int? statusCode = response.data['code'];
+      switch (statusCode) {
+        case 200:
+          return right(true);
+        case 403:
+          return left(EmailOrPasswordIncorrect(error: response.data['data']));
+        default:
+          return left(UnknownError(error: 'Erro desconhecido'));
+      }
+    } catch (e, s) {
+      return left(UnknownError(error: e, stackTrace: s));
+    }
+
   }
 }

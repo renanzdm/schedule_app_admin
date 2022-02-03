@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/models/user_model.dart';
 import 'package:schedule_app_admin/app/service/shared_preferences_service.dart';
@@ -26,20 +25,39 @@ class LoginController extends GetxController with LoaderMixin, MessageMixin {
 
   Future<UserModel> loginEmailAndPassword(
       {required String email, required String password}) async {
-    UserModel userModel = const UserModel(name: '', phone: '', id: -1, accessToken: '');
+    UserModel userModel =
+        const UserModel(name: '', phone: '', id: -1, accessToken: '');
     loading(true);
     var response = await _loginService.login(email: email, password: password);
     loading(false);
     response.fold(
-          (err) {
+      (err) {
         messages(MessageModel.error(
-            title: err.error.toString(), message: err.message??''));
+            title: err.error.toString(), message: err.message ?? ''));
       },
-          (user) {
+      (user) {
         userModel = user;
       },
     );
     await _sharedPreferencesService.setUserModel(user: userModel);
     return userModel;
+  }
+
+  Future<bool> deleteAccount() async {
+    loading(true);
+    var response = await _loginService.deleteAccount();
+    loading(false);
+    bool resultRequest = false;
+    response.fold(
+      (err) async {
+        await _sharedPreferencesService.clearPreferences();
+        messages(MessageModel.error(
+            title: err.error.toString(), message: err.message ?? ''));
+      },
+      (success) {
+        resultRequest = success;
+      },
+    );
+    return resultRequest;
   }
 }

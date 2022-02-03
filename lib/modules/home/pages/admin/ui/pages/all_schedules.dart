@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:schedule_app_admin/app/ui/handler_messages/dialog_message.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/padding_default.dart';
+import 'package:schedule_app_admin/app/ui/widgets/dialog_content_default.dart';
 import 'package:schedule_app_admin/app/ui/widgets/error_loaded_widget.dart';
 import 'package:schedule_app_admin/modules/home/models/schedules_model.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/ui/admin_controller.dart';
@@ -41,8 +41,6 @@ class _AllSchedulesState extends State<AllSchedules> {
         style: TextStyle(color: Colors.black),
       ),
     ),
-  
-   
   ];
 
   @override
@@ -68,7 +66,7 @@ class _AllSchedulesState extends State<AllSchedules> {
           child: Obx(
             () {
               return Visibility(
-                visible: _adminController.listOfScheduleOrdering.isNotEmpty,
+                visible: _adminController.listOfSchedule.isNotEmpty,
                 replacement: const Center(
                   child: ErrorLoadedWidget(
                     error: 'Ainda não há agendamentos',
@@ -76,9 +74,9 @@ class _AllSchedulesState extends State<AllSchedules> {
                 ),
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  itemCount: _adminController.listOfScheduleOrdering.length,
+                  itemCount: _adminController.listOfSchedule.length,
                   itemBuilder: (context, index) {
-                    var item = _adminController.listOfScheduleOrdering[index];
+                    var item = _adminController.listOfSchedule[index];
                     return ScheduleWidget(item: item);
                   },
                 ),
@@ -122,13 +120,19 @@ class ScheduleWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
           onLongPress: () async {
-            await DialogAlertAction.showDialogWidget(
+            await showDialog(
                 context: context,
-                titleDialog: 'Deseja apagar Agendamento?',
-                confirmFunction: () async {
-                  await _adminController.deleteSchedule(item.id);
-                  Navigator.pop(context);
-                });
+                builder: (context) => DialogSimpleContentDefault(
+                    title: 'Deseja apagar Agendamento?',
+                    onConfirmFunction: () async {
+                      await _adminController.deleteSchedule(item.id);
+                      Navigator.pop(context);
+                    },
+                    onCancelFunction: () {
+                      Navigator.pop(context);
+                    },
+                    cancelTextButton: 'Cancelar',
+                    confirmTextButton: 'Apagar'));
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

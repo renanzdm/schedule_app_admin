@@ -3,19 +3,19 @@ import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/ui/theme_default/padding_default.dart';
 import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 
+import '../../../../../app/ui/widgets/app_bar_custom_widget.dart';
 import 'widgets/card_options_admin.dart';
 
 class AdminPage extends StatelessWidget {
-  AdminPage({Key? key}) : super(key: key);
+   AdminPage({Key? key,}) : super(key: key);
+
   final _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     var sizes = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin'),
-      ),
+          appBar: const AppBarCustomWidget(title: 'Administrador',),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
