@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hasura_connect/hasura_connect.dart';
+import 'package:schedule_app_admin/app/error/failure.dart';
 import 'package:schedule_app_admin/app/ui/handler_messages/handler_messages.dart';
 import 'package:schedule_app_admin/app/ui/loader/loader_mixin.dart';
 import 'package:schedule_app_admin/modules/home/models/dates_with_config_model.dart';
@@ -11,6 +13,11 @@ import 'package:schedule_app_admin/modules/home/models/services_model.dart';
 import 'package:schedule_app_admin/modules/home/models/times_model.dart';
 import 'package:schedule_app_admin/modules/home/pages/admin/service/admin_service.dart';
 import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
+
+enum ButtonPopUpMenuValue {
+  orderCres,
+  orderDesc,
+}
 
 class AdminController extends GetxController with LoaderMixin, MessageMixin {
   final HomeController _homeController;
@@ -34,8 +41,11 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
   Rxn<TimesModel> selectedItemDropDownButton = Rxn(null);
   Rx<int> vacancyValue = Rx<int>(0);
   RxList<SchedulesModel> listOfSchedule = RxList<SchedulesModel>([]);
+  RxList<SchedulesModel> listOfScheduleOrdering = RxList<SchedulesModel>([]);
   StreamSubscription? allSchedulesSubscription;
   Snapshot? allSchedulesSnapshot;
+  Rx<ButtonPopUpMenuValue> valuePopUpButton =
+      Rx<ButtonPopUpMenuValue>(ButtonPopUpMenuValue.orderDesc);
 
   @override
   void onInit() {
@@ -55,6 +65,38 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
     listOfTimesDefault.assignAll(_homeController.listOfTimesDefault);
     listOfServices.assignAll(_homeController.listOfServices);
     selectedItemDropDownButton.value = listOfTimesDefault.first;
+  }
+
+
+  void orderListSchedules(ButtonPopUpMenuValue valuePopUpButton) {
+    switch (valuePopUpButton) {
+      case ButtonPopUpMenuValue.orderCres:
+        listOfScheduleOrdering.value = listOfScheduleOrdering.reversed
+            .map((element) => SchedulesModel(
+                dateSchedule: element.dateSchedule,
+                hour: element.hour,
+                id: element.id,
+                idHour: element.idHour,
+                nameClient: element.nameClient,
+                nameService: element.nameService,
+                serviceId: element.serviceId))
+            .toList();
+        break;
+      case ButtonPopUpMenuValue.orderDesc:
+        listOfScheduleOrdering.value = listOfScheduleOrdering.reversed
+            .map((element) => SchedulesModel(
+                dateSchedule: element.dateSchedule,
+                hour: element.hour,
+                id: element.id,
+                idHour: element.idHour,
+                nameClient: element.nameClient,
+                nameService: element.nameService,
+                serviceId: element.serviceId))
+            .toList();
+        break;
+
+      default:
+    }
   }
 
   void setDateSchedule({required DateTime date}) {
@@ -106,9 +148,7 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
         qtdVacancy: vacancyValue.value);
     _loading(false);
     res.fold((l) {
-      _messages(
-        MessageModel.error(title: l.error.toString(), message: '')
-      );
+      _messages(MessageModel.error(title: l.error.toString(), message: ''));
     }, (r) async {
       await _homeController.getConfigurationDayScheduler();
       listDatesOfConfig.assignAll(_homeController.listOfConfigurationByDay);
@@ -166,6 +206,9 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
       allSchedulesSubscription = r.listen((event) {
         listOfSchedule.clear();
         listOfSchedule.addAll((event?['data']?['app_schedules'] ?? [])
+            .map<SchedulesModel>((e) => SchedulesModel.fromMap(e))
+            .toList());
+        listOfScheduleOrdering.addAll((event?['data']?['app_schedules'] ?? [])
             .map<SchedulesModel>((e) => SchedulesModel.fromMap(e))
             .toList());
       });

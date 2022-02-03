@@ -25,28 +25,25 @@ class ListTimesWidget extends StatelessWidget {
                   .map(
                     (element) => AnimatedContainer(
                       key: UniqueKey(),
-                      width: _homeController.idHour.value == element.id
-                          ? 55
-                          : 50,
-                      height: _homeController.idHour.value == element.id
-                          ? 55
-                          : 50,
+                      width:
+                          _homeController.idHour.value == element.id ? 55 : 50,
+                      height:
+                          _homeController.idHour.value == element.id ? 55 : 50,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
                           border: _homeController.idHour.value == element.id
                               ? Border.all(color: context.themeRed, width: 3)
                               : null,
-                          boxShadow:
-                              _homeController.idHour.value == element.id
-                                  ? <BoxShadow>[
-                                      const BoxShadow(
-                                        color: Colors.black,
-                                        offset: Offset(4.0, 6.0),
-                                        blurRadius: 2,
-                                      )
-                                    ]
-                                  : <BoxShadow>[]),
+                          boxShadow: _homeController.idHour.value == element.id
+                              ? <BoxShadow>[
+                                  const BoxShadow(
+                                    color: Colors.black,
+                                    offset: Offset(4.0, 6.0),
+                                    blurRadius: 2,
+                                  )
+                                ]
+                              : <BoxShadow>[]),
                       duration: const Duration(milliseconds: 1000),
                       child: Material(
                         color: element.qtdSchedulerPerHour == 0
@@ -66,49 +63,48 @@ class ListTimesWidget extends StatelessWidget {
                                 element.time,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    decoration:
-                                        element.qtdSchedulerPerHour == 0
-                                            ? TextDecoration.lineThrough
-                                            : null,
+                                    decoration: element.qtdSchedulerPerHour == 0
+                                        ? TextDecoration.lineThrough
+                                        : null,
                                     color: element.qtdSchedulerPerHour == 0
                                         ? Colors.grey.shade600
                                         : Colors.black),
                               ),
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Vagas: ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 8,
-                                      decoration:
-                                      element.qtdSchedulerPerHour == 0
-                                          ? TextDecoration.lineThrough
-                                          : null,
-                                      color: element.qtdSchedulerPerHour == 0
-                                          ? Colors.grey.shade600
-                                          : Colors.black),
-                                  children: [
-                                    TextSpan(
-                                        text: element.qtdSchedulerPerHour
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            decoration:
-                                                element.qtdSchedulerPerHour ==
-                                                        0
-                                                    ? TextDecoration
-                                                        .lineThrough
-                                                    : null,
-                                            color:
-                                                element.qtdSchedulerPerHour ==
-                                                        0
-                                                    ? Colors.grey.shade600
-                                                    : Colors.black))
-                                  ],
-
+                              if (element.qtdSchedulerPerHour > 1)
+                                RichText(
+                                  text: TextSpan(
+                                    text: 'Vagas: ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 8,
+                                        decoration:
+                                            element.qtdSchedulerPerHour == 0
+                                                ? TextDecoration.lineThrough
+                                                : null,
+                                        color: element.qtdSchedulerPerHour == 0
+                                            ? Colors.grey.shade600
+                                            : Colors.black),
+                                    children: [
+                                      TextSpan(
+                                          text: element.qtdSchedulerPerHour
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              decoration:
+                                                  element.qtdSchedulerPerHour ==
+                                                          0
+                                                      ? TextDecoration
+                                                          .lineThrough
+                                                      : null,
+                                              color:
+                                                  element.qtdSchedulerPerHour ==
+                                                          0
+                                                      ? Colors.grey.shade600
+                                                      : Colors.black))
+                                    ],
+                                  ),
                                 ),
-                              ),
                             ],
                           ),
                           borderRadius: BorderRadius.circular(12),

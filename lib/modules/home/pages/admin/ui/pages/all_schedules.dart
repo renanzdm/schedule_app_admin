@@ -8,14 +8,12 @@ import 'package:schedule_app_admin/modules/home/pages/admin/ui/admin_controller.
 
 class AllSchedules extends StatefulWidget {
   const AllSchedules({Key? key}) : super(key: key);
-
   @override
   State<AllSchedules> createState() => _AllSchedulesState();
 }
 
 class _AllSchedulesState extends State<AllSchedules> {
   final _adminController = Get.find<AdminController>();
-
   @override
   void initState() {
     _adminController.getAllSchedulesSubscription();
@@ -28,11 +26,41 @@ class _AllSchedulesState extends State<AllSchedules> {
     super.dispose();
   }
 
+  List<PopupMenuEntry<ButtonPopUpMenuValue>> listButtons = [
+    const PopupMenuItem(
+      value: ButtonPopUpMenuValue.orderCres,
+      child: Text(
+        'Ordem Crescente',
+        style: TextStyle(color: Colors.black),
+      ),
+    ),
+    const PopupMenuItem(
+      value: ButtonPopUpMenuValue.orderDesc,
+      child: Text(
+        'Ordem Decrescente',
+        style: TextStyle(color: Colors.black),
+      ),
+    ),
+  
+   
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Agendamentos'),
+        actions: [
+          PopupMenuButton<ButtonPopUpMenuValue>(
+            onSelected: (ButtonPopUpMenuValue value) {
+              _adminController.orderListSchedules(value);
+            },
+            icon: const Icon(Icons.filter_alt_outlined),
+            itemBuilder: (context) {
+              return listButtons;
+            },
+          )
+        ],
       ),
       body: SizedBox(
         child: Padding(
@@ -40,7 +68,7 @@ class _AllSchedulesState extends State<AllSchedules> {
           child: Obx(
             () {
               return Visibility(
-                visible: _adminController.listOfSchedule.isNotEmpty,
+                visible: _adminController.listOfScheduleOrdering.isNotEmpty,
                 replacement: const Center(
                   child: ErrorLoadedWidget(
                     error: 'Ainda não há agendamentos',
@@ -48,9 +76,9 @@ class _AllSchedulesState extends State<AllSchedules> {
                 ),
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  itemCount: _adminController.listOfSchedule.length,
+                  itemCount: _adminController.listOfScheduleOrdering.length,
                   itemBuilder: (context, index) {
-                    var item = _adminController.listOfSchedule[index];
+                    var item = _adminController.listOfScheduleOrdering[index];
                     return ScheduleWidget(item: item);
                   },
                 ),
