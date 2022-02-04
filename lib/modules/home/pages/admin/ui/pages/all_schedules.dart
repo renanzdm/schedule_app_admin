@@ -55,6 +55,13 @@ class _AllSchedulesState extends State<AllSchedules> {
         style: TextStyle(color: Colors.black),
       ),
     ),
+    const PopupMenuItem(
+      value: ButtonPopUpMenuValue.all,
+      child: Text(
+        'Todos os agendamentos',
+        style: TextStyle(color: Colors.black),
+      ),
+    ),
   ];
 
   @override

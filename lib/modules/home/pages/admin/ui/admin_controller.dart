@@ -82,10 +82,8 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
     } else if (valuePopButton.value == ButtonPopUpMenuValue.orderDescending) {
       reverseOrderListSchedule();
     } else if (valuePopButton.value == ButtonPopUpMenuValue.finisheds) {
-      reasignListScheduleOfBackup();
       filterByFinished();
     } else if (valuePopButton.value == ButtonPopUpMenuValue.notFinisheds) {
-      reasignListScheduleOfBackup();
       filterByNotFinished();
     } else {
       reasignListScheduleOfBackup();
@@ -99,11 +97,13 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
   }
 
   void filterByFinished() {
+    reasignListScheduleOfBackup();
     listOfSchedule.value =
         listOfSchedule.where((item) => item.finished == false).toList();
   }
 
   void filterByNotFinished() {
+    reasignListScheduleOfBackup();
     listOfSchedule.value =
         listOfSchedule.where((item) => item.finished == true).toList();
   }
