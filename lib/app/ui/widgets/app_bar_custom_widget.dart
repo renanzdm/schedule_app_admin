@@ -20,21 +20,22 @@ class AppBarCustomWidget extends StatelessWidget
           child: IconButton(
             onPressed: () {
               showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) => DialogSimpleContentDefault(
-                      title: 'Deseja sair de sua conta?',
-                      onConfirmFunction: () async {
-                        final SharedPreferencesService _sharedPreferences =
-                            SharedPreferencesService();
-                            await _sharedPreferences.clearPreferences();
-                        Navigator.pushReplacementNamed(context, '/');
-                      },
-                      onCancelFunction: () {
-                        Navigator.pop(context);
-                      },
-                      cancelTextButton: 'Cancelar',
-                      confirmTextButton: 'Deslogar'));
+                barrierDismissible: false,
+                context: context,
+                builder: (context) => DialogSimpleContentDefault(
+                    title: 'Deseja sair de sua conta?',
+                    onConfirmFunction: () async {
+                      final SharedPreferencesService _sharedPreferences =
+                          SharedPreferencesService();
+                      await _sharedPreferences.clearPreferences();
+                      Navigator.pushReplacementNamed(context, '/');
+                    },
+                    onCancelFunction: () {
+                      Navigator.pop(context);
+                    },
+                    cancelTextButton: 'Cancelar',
+                    confirmTextButton: 'Deslogar'),
+              );
             },
             icon: const Icon(Icons.logout_outlined),
           ),

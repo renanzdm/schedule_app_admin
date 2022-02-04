@@ -28,16 +28,30 @@ class _AllSchedulesState extends State<AllSchedules> {
 
   List<PopupMenuEntry<ButtonPopUpMenuValue>> listButtons = [
     const PopupMenuItem(
-      value: ButtonPopUpMenuValue.orderCres,
+      value: ButtonPopUpMenuValue.orderGrowing,
       child: Text(
         'Ordem Crescente',
         style: TextStyle(color: Colors.black),
       ),
     ),
     const PopupMenuItem(
-      value: ButtonPopUpMenuValue.orderDesc,
+      value: ButtonPopUpMenuValue.orderDescending,
       child: Text(
         'Ordem Decrescente',
+        style: TextStyle(color: Colors.black),
+      ),
+    ),
+     const PopupMenuItem(
+      value: ButtonPopUpMenuValue.notFinisheds,
+      child: Text(
+        'Nao finalizadas',
+        style: TextStyle(color: Colors.black),
+      ),
+    ),
+     const PopupMenuItem(
+      value: ButtonPopUpMenuValue.finisheds,
+      child: Text(
+        'Finalizadas',
         style: TextStyle(color: Colors.black),
       ),
     ),
@@ -51,7 +65,7 @@ class _AllSchedulesState extends State<AllSchedules> {
         actions: [
           PopupMenuButton<ButtonPopUpMenuValue>(
             onSelected: (ButtonPopUpMenuValue value) {
-              _adminController.orderListSchedules(value);
+                  _adminController.setValuePopButton(value);
             },
             icon: const Icon(Icons.filter_alt_outlined),
             itemBuilder: (context) {

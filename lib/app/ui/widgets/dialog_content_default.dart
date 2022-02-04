@@ -21,9 +21,10 @@ class DialogSimpleContentDefault extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: 150,
-        width: 250,
+        height: 200,
+        width: 320,
         child: Card(
+          margin: EdgeInsets.all(20),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(22),

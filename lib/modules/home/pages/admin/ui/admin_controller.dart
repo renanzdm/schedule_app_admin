@@ -15,8 +15,11 @@ import 'package:schedule_app_admin/modules/home/pages/admin/service/admin_servic
 import 'package:schedule_app_admin/modules/home/ui/home_controller.dart';
 
 enum ButtonPopUpMenuValue {
-  orderCres,
-  orderDesc,
+  orderGrowing,
+  orderDescending,
+  finisheds,
+  notFinisheds,
+  all
 }
 
 class AdminController extends GetxController with LoaderMixin, MessageMixin {
@@ -41,11 +44,12 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
   Rxn<TimesModel> selectedItemDropDownButton = Rxn(null);
   Rx<int> vacancyValue = Rx<int>(0);
   RxList<SchedulesModel> listOfSchedule = RxList<SchedulesModel>([]);
-  RxList<SchedulesModel> listOfScheduleOrdering = RxList<SchedulesModel>([]);
+  RxList<SchedulesModel> listOfScheduleBackup = RxList<SchedulesModel>([]);
+
   StreamSubscription? allSchedulesSubscription;
   Snapshot? allSchedulesSnapshot;
-  Rx<ButtonPopUpMenuValue> valuePopUpButton =
-      Rx<ButtonPopUpMenuValue>(ButtonPopUpMenuValue.orderDesc);
+  Rx<ButtonPopUpMenuValue> valuePopButton =
+      Rx<ButtonPopUpMenuValue>(ButtonPopUpMenuValue.orderDescending);
 
   @override
   void onInit() {
@@ -67,35 +71,55 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
     selectedItemDropDownButton.value = listOfTimesDefault.first;
   }
 
+  void setValuePopButton(ButtonPopUpMenuValue value) {
+    valuePopButton.value = value;
+    listSchedulesFiltered();
+  }
 
-  void orderListSchedules(ButtonPopUpMenuValue valuePopUpButton) {
-    switch (valuePopUpButton) {
-      case ButtonPopUpMenuValue.orderCres:
-        listOfScheduleOrdering.value = listOfScheduleOrdering.reversed
-            .map((element) => SchedulesModel(
-                dateSchedule: element.dateSchedule,
-                hour: element.hour,
-                id: element.id,
-                idHour: element.idHour,
-                nameClient: element.nameClient,
-                nameService: element.nameService,
-                serviceId: element.serviceId))
-            .toList();
-        break;
-      case ButtonPopUpMenuValue.orderDesc:
-        listOfScheduleOrdering.value = listOfScheduleOrdering.reversed
-            .map((element) => SchedulesModel(
-                dateSchedule: element.dateSchedule,
-                hour: element.hour,
-                id: element.id,
-                idHour: element.idHour,
-                nameClient: element.nameClient,
-                nameService: element.nameService,
-                serviceId: element.serviceId))
-            .toList();
-        break;
+  void listSchedulesFiltered() {
+    if (valuePopButton.value == ButtonPopUpMenuValue.orderGrowing) {
+      reverseOrderListSchedule();
+    } else if (valuePopButton.value == ButtonPopUpMenuValue.orderDescending) {
+      reverseOrderListSchedule();
+    } else if (valuePopButton.value == ButtonPopUpMenuValue.finisheds) {
+      reasignListScheduleOfBackup();
+      filterByFinished();
+    } else if (valuePopButton.value == ButtonPopUpMenuValue.notFinisheds) {
+      reasignListScheduleOfBackup();
+      filterByNotFinished();
+    } else {
+      reasignListScheduleOfBackup();
+    }
+  }
 
-      default:
+  void reverseOrderListSchedule() {
+    reasignListScheduleOfBackup();
+    listOfScheduleBackup.value = listOfScheduleBackup.reversed.toList();
+    listOfSchedule.value = listOfSchedule.reversed.toList();
+  }
+
+  void filterByFinished() {
+    listOfSchedule.value =
+        listOfSchedule.where((item) => item.finished == false).toList();
+  }
+
+  void filterByNotFinished() {
+    listOfSchedule.value =
+        listOfSchedule.where((item) => item.finished == true).toList();
+  }
+
+  void reasignListScheduleOfBackup() {
+    listOfSchedule.clear();
+    for (var element in listOfScheduleBackup) {
+      listOfSchedule.add(SchedulesModel(
+          dateSchedule: element.dateSchedule,
+          finished: element.finished,
+          hour: element.hour,
+          id: element.id,
+          idHour: element.idHour,
+          nameClient: element.nameClient,
+          nameService: element.nameService,
+          serviceId: element.serviceId));
     }
   }
 
@@ -205,12 +229,11 @@ class AdminController extends GetxController with LoaderMixin, MessageMixin {
       allSchedulesSnapshot = r;
       allSchedulesSubscription = r.listen((event) {
         listOfSchedule.clear();
-        listOfSchedule.addAll((event?['data']?['app_schedules'] ?? [])
+        listOfScheduleBackup.clear();
+        listOfScheduleBackup.addAll((event?['data']?['app_schedules'] ?? [])
             .map<SchedulesModel>((e) => SchedulesModel.fromMap(e))
             .toList());
-        listOfScheduleOrdering.addAll((event?['data']?['app_schedules'] ?? [])
-            .map<SchedulesModel>((e) => SchedulesModel.fromMap(e))
-            .toList());
+        reasignListScheduleOfBackup();
       });
     });
   }

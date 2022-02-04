@@ -6,6 +6,7 @@ class SchedulesModel {
   final String dateSchedule;
   final String nameService;
   final String hour;
+  final bool finished;
   SchedulesModel({
     this.nameService = '',
     this.hour = '',
@@ -14,6 +15,7 @@ class SchedulesModel {
     this.serviceId = -1,
     this.idHour = -1,
     this.dateSchedule = '',
+    this.finished=false
   });
 
   SchedulesModel copyWith({
@@ -24,6 +26,7 @@ class SchedulesModel {
     String? dateSchedule,
     String? nameService,
     String? hour,
+    bool? finished,
   }) {
     return SchedulesModel(
       id: id ?? this.id,
@@ -32,7 +35,8 @@ class SchedulesModel {
       idHour: idHour ?? this.idHour,
       dateSchedule: dateSchedule ?? this.dateSchedule,
       nameService: nameService ??this.nameService,
-      hour:  hour ??this.hour
+      hour:  hour ??this.hour,
+      finished: finished??this.finished
     );
   }
 
@@ -54,13 +58,14 @@ class SchedulesModel {
       nameClient: map['name_client'] ?? '',
       serviceId: map['service_id'] ?? 0,
       idHour: map['id_hour'] ?? 0,
-      dateSchedule: formatDate(map['date_schedule'] ?? ''),
+      dateSchedule: _formatDate(map['date_schedule'] ?? ''),
       nameService: map['name_service'] ?? '',
       hour: map['hour'] ?? '',
+      finished: _setIfScheduleIsFinished(map['date_schedule']),
     );
   }
 
-  static String formatDate(String date) {
+  static String _formatDate(String date) {
     String value = '';
     if (date.isNotEmpty) {
       var listSplit = date.split('-');
@@ -69,8 +74,23 @@ class SchedulesModel {
     return value;
   }
 
+ static _setIfScheduleIsFinished(String date){
+     int year = 0;
+     int month = 0;
+     int day = 0;
+    if (date.isNotEmpty) {
+      var listSplit = date.split('-');
+      year = int.tryParse(listSplit[0]) ??0; 
+      month=int.tryParse(listSplit[1])??0;
+      day = int.tryParse(listSplit[2])??0;
+    }
+   return DateTime.now().isBefore(DateTime(year,month,day));
+  }
+
+  
+
   @override
   String toString() {
-    return 'SchedulesModel(id: $id, nameClient: $nameClient, serviceId: $serviceId, idHour: $idHour, dateSchedule: $dateSchedule, nameService: $nameService, hour: $hour)';
+    return 'SchedulesModel(id: $id, nameClient: $nameClient, serviceId: $serviceId, idHour: $idHour, dateSchedule: $dateSchedule, nameService: $nameService, hour: $hour, finished: $finished)';
   }
 }
