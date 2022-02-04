@@ -15,7 +15,7 @@ Future<void> main() async {
   await SentryFlutter.init(
     (options) {
       options.dsn =
-          const String.fromEnvironment('SENTRYURL');
+           'https://de51e5ff30b6486ea6db9e367bea1fb7@o1128671.ingest.sentry.io/6174758';
       options.tracesSampleRate = 1.0;
     },
     appRunner: () => runApp(const MyApp()),

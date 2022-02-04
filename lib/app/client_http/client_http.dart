@@ -14,7 +14,7 @@ class ClientHttp extends DioForNative {
   @override
   set options(BaseOptions _options) {
     _options = BaseOptions(
-      baseUrl:   const String.fromEnvironment('APIURL'),
+      baseUrl: 'https://server-schedule-api.herokuapp.com',
       connectTimeout: 15000,
       receiveTimeout: 15000,
     );

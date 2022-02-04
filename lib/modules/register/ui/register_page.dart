@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schedule_app_admin/app/service/shared_preferences_service.dart';
@@ -24,16 +26,16 @@ class RegisterPage extends GetView<RegisterController> {
     return Scaffold(
       body: Padding(
         padding: PaddingDefault.screenPaddingHorizontal,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Container(
-            alignment: Alignment.center,
-            height: sizes.height,
-            width: sizes.width,
+        child: Container(
+          alignment: Alignment.center,
+          height: sizes.height,
+          width: sizes.width,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Align(
+            if(Platform.isIOS) Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
                     onPressed: () {
@@ -61,7 +63,11 @@ class RegisterPage extends GetView<RegisterController> {
                     phoneController: _phoneController,
                     nameController: _nameController,
                     sizes: sizes),
+               const SizedBox(
+                  height: 20,
+                ),
               ],
+              
             ),
           ),
         ),
