@@ -94,6 +94,7 @@ class _AllSchedulesState extends State<AllSchedules> {
                   ),
                 ),
                 child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   itemCount: _adminController.listOfSchedule.length,
                   itemBuilder: (context, index) {
